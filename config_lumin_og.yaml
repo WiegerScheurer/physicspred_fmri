@@ -1,0 +1,126 @@
+# ================
+# Experiment Setup
+# ================
+
+experiment:
+  name: "physicspred"
+  psychopy_version: "2024.2.4"
+  n_trials: 20
+  feedback_freq: 5          # Trials between feedback moments
+  target_baserate: 0.5      # Frequency of target trials (1:1 ratio)
+  verbose: false
+  exp_parameters:          # Parameters to record per trial
+    - trial_type
+    - trial
+    - ball_speed
+    - ball_start_color
+    - ball_color_change
+    - interactor
+    - bounce
+    - bounce_moment
+    - random_bounce_direction
+    - target_onset
+    - ball_change
+    - target_color
+    - abs_congruent
+    - sim_congruent
+    - response
+    - accuracy
+    - rt
+    - start_pos
+    - end_pos
+    - abs_rfup
+    - abs_rfright
+    - abs_rfdown
+    - abs_rfleft
+    - sim_rfup
+    - sim_rfright
+    - sim_rfdown
+    - sim_rfleft
+
+# =============
+# File Paths
+# =============
+paths:
+  # datadir: "/Users/wiegerscheurer/repos/physicspred/data/"
+  datadir: "/Users/wieger.scheurer/miniconda3/envs/exp/lib/python3.10/site-packages/exptools2/experiments/physicspred/behav_data/"
+  # int_45: "/Users/wiegerscheurer/repos/physicspred/objects/interactor_45_flat_white.png"
+  int_45: "/Users/wieger.scheurer/repoclones/physicspred_exp/objects/interactor_45_flat_white.png"
+  int_135: "/Users/wieger.scheurer/repoclones/physicspred_exp/objects/interactor_135_flat_white.png"
+  # datadir: "D:/Users/wiesch/physicspred-main/data/cubicle6"
+
+# =============
+# Display Settings
+# =============
+display:
+  win_dims: [1920, 1080]   # Window dimensions
+  # win_dims: [3840, 2160]
+  # win_dims: [2560, 1440]
+  experiment_screen: 1     # 0=main, 1=second screen
+  full_screen: false
+  draw_grid: false
+  background_luminance: -0.6 # was -0.75
+  frame_dur: 0.00833333333 # ~120Hz (1/120) time of a single frame
+  square_size: 1080        # Size of square experiment screen
+  # square_size: 1440
+
+# =============
+# Timing Parameters
+# =============
+timing:
+  fixation_dur: 0.5
+  interactor_dur: 1.25
+  occluder_dur: 0.75
+  ballmov_dur: 3          # Ball movement duration
+  feedback_dur: 2
+  mean_iti: 0.5            # Inter-trial interval
+  min_iti: 0.5
+  max_iti: 1.5
+  # hue_change_dur: 2
+  # ball_change_dur: 0.475
+  tr: 0.450                # fMRI parameters based on Ekman paper
+  te: 0.039
+  truncation_cutoff: 4
+
+# =============
+# Ball Properties
+# =============
+ball:
+  radius: 50
+  avg_speed: 9.5                # Average speed
+  natural_speed_variance: 0.25
+  speed_change: 1.2             # For speed change trials # TODO: REMOVE THIS!!!!!!!
+  spawn_spread: 1.4             # Smaller = more spread
+  decay_constant: 0.0022        # Decay constant for realistic speed slowdown
+  
+  # Color properties (Oklab color space 0-1 for (L)uminance)
+  start_color_mean: 0.8
+  start_color_sd: 0.05
+  color_change_mean: 0
+  color_change_sd: 0.06
+  change_color: [0.45, 0.45, 0.7] # Not currently used?
+  neg_bias_factor: 1.4
+
+# =============
+# Interactor Properties
+# =============
+interactor:
+  height: 150
+  width: 15
+
+# =============
+# Occluder Properties
+# =============
+occluder:
+  radius: 360
+  opacity: 1               # 1 = opaque, 0 = transparent
+  color: "#764A15" #"#996633"         # Brown color
+  type: "square"           # Options: "square", "cross", "cross_smooth"
+
+# =============
+# Fixation Properties
+# =============
+fixation:
+  color: "#33CC00"         # Greenish color
+  length: 30
+  thickness: 8

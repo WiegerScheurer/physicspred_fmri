@@ -1,0 +1,53 @@
+name: exp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - configobj=5.0.6
+  - cython=3.0.11
+  - gevent=23.9.1
+  - h5py=3.12.1
+  - ipykernel=6.29.5
+  - lxml=5.3.0
+  - mamba=2.1.0
+  - matplotlib=3.10.0
+  - moviepy=1.0.3
+  - msgpack-python=1.0.3
+  - pyopengl=3.1.9
+  - pyosf=1.0.5
+  - pyqt=6.7.1
+  - pyserial=3.5
+  - pysoundfile=0.13.1
+  - pytables=3.10.1
+  - python=3.10.14
+  - python-bidi=0.4.2
+  - python-sounddevice=0.5.0
+  - pyyaml=6.0.2
+  - qt=6.7.3
+  - scikit-image=0.25.0
+  - scikit-learn=1.6.1
+  - seaborn=0.13.2
+  - wxpython=4.1.1
+  - xlrd=2.0.1
+  - pip:
+      - Bottleneck==1.4.2
+      - Brotli==1.0.9
+      - colour-science==0.4.6
+      - conda-env-export==0.6.1
+      - Cython==3.0.11
+      - exptools2==0.1.dev0
+      - importlib-metadata==8.6.1
+      - omegaconf==2.3.0
+      - opensesame-plugin-eyelink==2.1.1197.0
+      - pathlib2==2.3.6
+      - pip==25.0
+      - prfseeg==0.0.dev1
+      - PyOpenGL==3.1.9
+      - pyqode-core==4.0.11
+      - pyqode-python==4.0.2
+      - PySocks==1.7.1
+      - PySoundCard==0.5.2
+      - sip==6.10.0
+      - sounddevice==0.5.0
+      - unicodedata2==15.1.0
+prefix: /Users/wieger.scheurer/miniconda3/envs/exp

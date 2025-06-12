@@ -1,0 +1,49 @@
+trial_type trial_option  bounce phant_bounce_direction  ball_change  ball_luminance  task_prompt
+interactor 135_bottom_r    True                   None         True            0.06        False
+interactor  45_bottom_l   False                   None         True            0.06         True
+interactor  45_bottom_l    True                   None         True            0.06        False
+interactor  45_bottom_d    True                   None        False            0.06         True
+     empty       none_u    True                  right         True            0.06         True
+     empty       none_d    True                   left        False            0.06         True
+     empty       none_l   False                   None        False            0.06        False
+     empty       none_d    True                   left         True            0.06         True
+interactor  45_bottom_d    True                   None        False            0.06        False
+interactor 135_bottom_r   False                   None        False            0.06        False
+     empty       none_r    True                  right         True            0.06        False
+     empty       none_d   False                   None        False            0.06        False
+interactor    135_top_l    True                   None         True            0.06        False
+interactor 135_bottom_d    True                   None         True            0.06        False
+     empty       none_u   False                   None         True            0.06        False
+interactor    135_top_u    True                   None         True            0.06        False
+     empty       none_l    True                  right         True            0.06         True
+     empty       none_u   False                   None        False            0.06         True
+interactor     45_top_r    True                   None         True            0.06         True
+interactor    135_top_u   False                   None         True            0.06         True
+interactor  45_bottom_d   False                   None        False            0.06        False
+interactor    135_top_u    True                   None        False            0.06        False
+interactor     45_top_u    True                   None        False            0.06        False
+     empty       none_r   False                   None        False            0.06         True
+interactor 135_bottom_d   False                   None        False            0.06        False
+     empty       none_r   False                   None         True            0.06        False
+interactor    135_top_l    True                   None        False            0.06         True
+     empty       none_l    True                   left         True            0.06        False
+     empty       none_r   False                   None        False            0.06         True
+interactor     45_top_u   False                   None        False            0.06        False
+     empty       none_d    True                   left         True            0.06        False
+interactor    135_top_l   False                   None         True            0.06        False
+     empty       none_d    True                   left         True            0.06        False
+interactor 135_bottom_d    True                   None         True            0.06         True
+     empty       none_u    True                  right        False            0.06        False
+     empty       none_u    True                  right         True            0.06        False
+     empty       none_u   False                   None        False            0.06        False
+interactor 135_bottom_r   False                   None        False            0.06         True
+     empty       none_l    True                  right        False            0.06         True
+interactor     45_top_u   False                   None        False            0.06         True
+     empty       none_l    True                   left        False            0.06        False
+     empty       none_d   False                   None        False            0.06        False
+     empty       none_r   False                   None         True            0.06        False
+     empty       none_l    True                   left        False            0.06        False
+interactor  45_bottom_l   False                   None        False            0.06        False
+interactor     45_top_r   False                   None         True            0.06        False
+interactor     45_top_r   False                   None        False            0.06        False
+     empty       none_r   False                   None        False            0.06        False

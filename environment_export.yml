@@ -1,0 +1,44 @@
+name: exp
+channels:
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+dependencies:
+  - scikit-learn
+  - xlrd
+  - pillow
+  - pyzmq
+  - python-bidi
+  - requests
+  - seaborn
+  - lxml
+  - numpy
+  - pyserial
+  - pyqt
+  - qt
+  - python-sounddevice
+  - scikit-image
+  - pyosf
+  - pysoundfile
+  - pip
+  - pyglet
+  - matplotlib
+  - pyopengl
+  - pyyaml
+  - psutil
+  - moviepy
+  - greenlet
+  - portaudio
+  - pandas
+  - pytables
+  - configobj
+  - ipython
+  - mamba
+  - gevent
+  - cython
+  - wxpython==4.1.1
+  - cffi
+  - msgpack-python
+  - python=3.10
+  - h5py
+  - ipykernel
+prefix: /Users/wieger.scheurer/miniconda3/envs/exp

@@ -1,0 +1,205 @@
+preferences:
+  general:
+    audioLib: sounddevice
+    units: deg
+
+window:
+  size: [1920, 1080]        # The size of the window in pixels (width, height).
+  pos: [0, 0]              # The position of the window on the screen (x, y).
+  fullscr: True  # Whether to run in full-screen mode. Overrides size arg
+  screen: 0  # The screen number to display the window on (0 is usually the primary screen).
+  winType: pyglet  # The backend to for the window (e.g., 'pyglet', 'pygame').
+  allowStencil: false  # Whether to allow stencil buffer (used for advanced graphics).
+  color: [-0.75, -0.75, -0.75]          # The background color of the window (in RGB space). # doesn't matter anymore
+  colorSpace: rgb  # The color space for the background color (e.g., 'rgb', 'dkl', 'lms').
+  backgroundFit: None  # How to fit the background image ('none', 'fit', 'stretch').
+  blendMode: "avg"  # The blend mode for drawing (e.g., 'avg', 'add').
+  useFBO: True  # Whether to use Frame Buffer Objects (for advanced graphics).
+  units: "pix"  # The default units for window operations (e.g., 'pix', 'norm', 'cm', 'deg', 'height').
+  multiSample: False  # Whether to use multi-sample anti-aliasing. # QUADRUPLE CHECK IF THIS DOESN'T MESS UP MOVEMENT OF BALL, APPEARED TO BE SLUGGISH
+  waitBlanking: True  # Whether to wait for vertical blanking (reduces flicker).
+
+monitor:
+  name: default
+  width: 50  # in cm
+  distance: 80  # in cm
+  gamma: 1
+
+mouse:
+  visible: False
+
+eyetracker:
+  model: eyelink
+  CNUM: 9
+  MIN_CALIB_FIX: 1000
+
+mri:
+  simulate: False
+  TR: 1.0  # seconds between volume acquisitions
+  TA: 1.0  # seconds to acquire one volume
+  volumes: 10  # number of 3D volumes to obtain in a given scanning run
+  sync: t  # character used as flag for sync timing, default: ‘5’
+  skip: 0  # how many frames to silently omit initially during T1 stabilization, no sync pulse.
+  sound: False  # simulate scanner noise
+
+# =============
+# Display Settings
+# =============
+display:
+  win_dims: [1920, 1080]   # Window dimensions
+  # win_dims: [3840, 2160]
+  # win_dims: [2560, 1440]
+  experiment_screen: 1     # 0=main, 1=second screen
+  # full_screen: true
+  # draw_grid: false
+  background_luminance: -0.7 # was -0.75
+  frame_dur: 0.00833333333 # ~120Hz (1/120) time of a single frame
+  square_size: 1080        # Size of square experiment screen
+
+
+# =============
+# Occluder Properties
+# =============
+occluder:
+  radius: 360
+  opacity: 1.0 #.5               # 1 = opaque, 0 = transparent
+  color: "#764A15" #"#996633"         # Brown color
+  # type: "square"           # Options: "square", "cross", "cross_smooth"
+
+# =============
+# Fixation Properties
+# =============
+fixation:
+  color: "#33CC00"         # Greenish color
+  length: 30
+  thickness: 8
+
+# =============
+# Interactor Properties
+# =============
+interactor:
+  height: 150
+  width: 15
+  # path_45: "/Users/wiegerscheurer/repos/physicspred/objects/interactor_45_flat_white.png"
+  # path_45: "/Users/wiegerscheurer/repos/physicspred/objects/interactor_45_flat_white.png"
+  path_45: "/Users/wieger.scheurer/repoclones/physicspred_exp/objects/interactor_45_flat_white.png"
+  path_135: "/Users/wieger.scheurer/repoclones/physicspred_exp/objects/interactor_135_flat_white.png"
+  # path_135: "/Users/wiegerscheurer/repos/physicspred/objects/interactor_135_flat_white.png"
+
+# =============
+# Ball Properties
+# =============
+ball:
+  radius: 50
+  avg_speed: 8.5               # Average speed, was 7.5
+  natural_speed_variance: 0.25 # This should be adapted relative to avg_speed, it's .25 when avg_speed is 7.5
+  speed_change: 1.2             # For speed change trials # TODO: REMOVE THIS!!!!!!!
+  spawn_spread: 1.4             # Smaller = more spread
+  # decay_constant: 0.00022 # 0.0015        # Decay constant for realistic speed slowdown
+  decay_constant: 0.00044 # 0.0015    # this likelyd epends on the refresh rate. At desk screen it's 0.00044 (60hz)
+  
+  # Color properties (Oklab color space 0-1 for (L)uminance)
+  start_color_mean: 0.85 # was 0.75
+  start_color_sd: 0.05 # was .05
+  color_change_mean: -.8
+  color_change_sd: 0.06
+  # color_change_sd: 0.86
+  # change_color: [0.45, 0.45, 0.7] # Not currently used?
+  neg_bias_factor: 1.4
+  neg_bias_shift: 0.02
+
+# =============
+# Timing Parameters
+# =============
+timing:
+  fixation_dur: 0.5
+  interactor_dur: 1.25
+  occluder_dur: 0.75
+  ballmov_dur: 3          # Ball movement duration
+  feedback_dur: 2
+  # mean_iti: 10.5            # Inter-trial interval, not used
+  min_iti: 1
+  max_iti: 10
+  # hue_change_dur: 2
+  # ball_change_dur: 0.475
+  tr: 1              # fMRI parameters based on Ekman paper
+  te: 0.039
+  truncation_cutoff: 10  # Same as max_iti, right? not used 
+  spatloc_occluder_dur: 2.5 # so 5s in total, because conjoined by ITI
+  spatloc_ballmov_dur: 15
+  spatloc_iti_dur: 2.5
+  # stutter_interval: 0.05 # was 0.25
+  # stutter_dur: 0.05 # was 0.25
+  stutter_interval: 0.25 # was 0.25
+  stutter_dur: 0.25 # was 0.25
+  movement_dur: .6
+  task_prompt_dur: 5 # Duration of task prompt display
+  post_prompt_iti: 1
+  short_break_dur: 30
+  short_break_freq: 3 # 22
+  long_break_dur: 60
+  long_break_freq: 6 #88
+
+# =============
+# File Paths
+# =============
+paths:
+  # datadir: "/Users/wiegerscheurer/repos/physicspred/data/"
+  datadir: "/Users/wieger.scheurer/repoclones/physicspred_exp/data/"
+
+  # int_45: "/Users/wiegerscheurer/repos/physicspred/objects/interactor_45_flat_white.png"
+  # int_135: "/Users/wiegerscheurer/repos/physicspred/objects/interactor_135_flat_white.png"
+  # datadir: "D:/Users/wiesch/physicspred-main/data/cubicle6"
+
+# ================
+# Various Settings (gestolen van prf-seeg)
+# ================
+
+various:
+  text_width: 700
+  text_height: 40
+  text_position_x: 0
+  text_position_y: 175
+  buttons: ['b', 'j', 'k', 'l', 'semicolon']
+
+# ================
+# Experiment Setup
+# ================
+
+experiment:
+  name: "physicspred"
+  psychopy_version: "2024.2.4"
+  n_trials: 10
+  # n_trials: 32
+  n_trials_spatloc: 12
+  feedback_freq: 5          # Trials between feedback moments
+  target_baserate: 0.5      # Frequency of target trials (1:1 ratio)
+  verbose: false
+  exp_parameters:          # Parameters to record per trial
+    - trial_type
+    - trial
+    - ball_speed
+    - ball_start_color
+    - ball_color_change
+    - interactor
+    - bounce
+    - bounce_moment
+    - random_bounce_direction
+    - target_onset
+    - ball_change
+    - target_color
+    - abs_congruent
+    - sim_congruent
+    - response
+    - accuracy
+    - rt
+    - start_pos
+    - end_pos
+    - abs_rfup
+    - abs_rfright
+    - abs_rfdown
+    - abs_rfleft
+    - sim_rfup
+    - sim_rfright
+    - sim_rfdown
+    - sim_rfleft
