@@ -18,6 +18,11 @@
 # Important to schedule some lab bookings, so that I can test all of that. Could then also test the example script. 
 
 
+### TODO: There is a problem with the window or something, no clue what happened, but it might not occur yet in the backup
+# i made which is the physsicspred_fmri.py file, check that. The main problem is that the text windows do not show up?
+# I presume it has something to do with a potential overridance of the window or someting, figure that out. 
+# THen, check whether the button response assignment works. THEN implement eyetracker and fMRI syncs, then test.
+
 
 #%%
 import os
@@ -32,6 +37,7 @@ from exptools2.core import PylinkEyetrackerSession
 import pandas as pd
 import os.path as op
 from psychopy.visual import TextStim
+import argparse
 
 #%%
 
@@ -96,10 +102,14 @@ class InstructionTrial(Trial):
         self.trial = "instruction"
         self.phase_names = ["instruction"]
 
-        txt_height = self.session.settings['various'].get('text_height')
-        txt_width = self.session.settings['various'].get('text_width')
-        text_position_x = self.session.settings['various'].get('text_position_x')
-        text_position_y = self.session.settings['various'].get('text_position_y')
+        txt_height = self.session.config['various'].get('text_height')
+        txt_width = self.session.config['various'].get('text_width')
+        text_position_x = self.session.config['various'].get('text_position_x')
+        text_position_y = self.session.config['various'].get('text_position_y')
+        # txt_height = self.session.settings['various'].get('text_height')
+        # txt_width = self.session.settings['various'].get('text_width')
+        # text_position_x = self.session.settings['various'].get('text_position_x')
+        # text_position_y = self.session.settings['various'].get('text_position_y')
 
         if txt is None:
             txt = '''Press any button to commence.'''
@@ -132,39 +142,12 @@ class InstructionTrial(Trial):
                     self.stop_phase()
 
 
-# ooookayyy voor dezemoet ik waarschijnlijk ook nog een vaste 2s uitloop hebben voor HRF uitloop (phase durs?)
-# class TaskPromptTrial(InstructionTrial):
-#     """ Simple trial with text (trial x) and buttonpress log. """
-
-#     def __init__(self, session, trial_nr, phase_durations=None,
-#                  txt="Did the ball change brightness?.", draw_each_frame=False, **kwargs):
-
-
-
-#         txt = f"Did the ball change brightness\n\nPress {self.session.button_map['no']} for NO or {self.session.button_map['yes']} for YES",
-#         super().__init__(session, trial_nr, phase_durations, txt, draw_each_frame=draw_each_frame, **kwargs)
-#         self.keys = [self.session.button_map["no"], self.session.button_map["yes"]]
-    
-#     def draw(self):
-#         self.text.draw()
-#         self.session.win.flip()
-
-#     def get_events(self):
-#         events = Trial.get_events(self) # Trial because the parent class is instruction trial which has no get_events()
-
-#         if self.keys is None:
-#             if events:
-#                 self.stop_phase()
-#         else:
-#             for key, t in events:
-#                 if key in self.keys:
-#                     self.stop_phase()
-
 
 class BallTrial(Trial):
     """Trial for ball movement and hue change paradigm"""
     
-    def __init__(self, session, trial_nr, phase_durations, trial_params, phase_names, draw_each_frame=False, txt=None, keys=None, **kwargs):
+    def __init__(self, session, trial_nr, phase_durations, trial_params, 
+                 phase_names, draw_each_frame=False, txt=None, keys=None, run_no=None, **kwargs):
         super().__init__(session, trial_nr, phase_durations, phase_names, draw_each_frame=draw_each_frame, **kwargs)
         
         self.trial_idx = self.trial_nr # NOT NEEDED Adjust trial index to match design matrix indexing (account for instruction trial)
@@ -172,7 +155,6 @@ class BallTrial(Trial):
         # Store trial parameters
         self.config = session.config
         # self.win = session.win
-
         # Extract trial-specific parameters
         self.trial_idx = self.trial_nr % len(session.dmx['trial_option']) # What does this do
         # if self.trial_idx > 0:
@@ -189,16 +171,27 @@ class BallTrial(Trial):
         self.changed_ball_color = oklab_to_rgb([(self.ball_start_color + self.ball_color_change), 0, 0], psychopy_rgb=True)
         
         # Preparatory work for task prompt versions
-        txt_height = self.session.settings['various'].get('text_height')
-        txt_width = self.session.settings['various'].get('text_width')
-        text_position_x = self.session.settings['various'].get('text_position_x')
-        text_position_y = self.session.settings['various'].get('text_position_y')
+        txt_height = self.session.config['various'].get('text_height')
+        txt_width = self.session.config['various'].get('text_width')
+        text_position_x = self.session.config['various'].get('text_position_x')
+        text_position_y = self.session.config['various'].get('text_position_y')
+        # # Preparatory work for task prompt versions
+        # txt_height = self.session.settings['various'].get('text_height')
+        # txt_width = self.session.settings['various'].get('text_width')
+        # text_position_x = self.session.settings['various'].get('text_position_x')
+        # text_position_y = self.session.settings['various'].get('text_position_y')
 
         if txt is None:
             txt = '''Press any button to continue.'''
 
-        txt = f"Did the ball change brightness?\nPress {self.session.button_map['no']} for NO or {self.session.button_map['yes']} for YES"
-        self.keys = [self.session.button_map["no"], self.session.button_map["yes"]] 
+        buttons = ["left", "right"]
+        change_detect_button = session.dmx["change_detect_button"][self.trial_idx]
+        button_map = {"yes": change_detect_button,
+                      "no": buttons[0] if change_detect_button == buttons[1] else buttons[1]}  # Ensure 'no' is the opposite button
+
+        txt = f"Did the ball change brightness?\nPress {button_map['no']} for NO or {button_map['yes']} for YES"
+        # txt = f"Did the ball change brightness?\nPress {self.session.button_map['no']} for NO or {self.session.button_map['yes']} for YES"
+        self.keys = [button_map["no"], button_map["yes"]] 
         # self.response_given = False # This is to check if the response has been given, so that we can stop the phase
 
         self.text = TextStim(session.win, txt,
@@ -505,7 +498,7 @@ class BallTrial(Trial):
 class BallHueSession(Session):
     """Session for the Ball Hue experiment"""
     
-    def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None):
+    def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None, run_no:int=None):
         super().__init__(output_str, output_dir=output_dir, settings_file=settings_file)
         
         # Load configuration file
@@ -515,24 +508,57 @@ class BallHueSession(Session):
         # Setup visual elements
         self.setup_visual_elements()
         
-        # Generate experiment design
-        self.dmx = self.create_design()
-        
-        # Determine which button does what # Check if works
-        button_options = ["left", "right"]
-        button_order = random.sample(button_options, len(button_options))
-        self.button_map = {
-            "no": button_order[0], # Session because it's an input and the super class is not yet initialized
-            "yes": button_order[1],
-        }
+        if run_no == 1:
+            # Generate experiment design
+            self.dmx = self.create_design()
+
+            # # Determine which button does what # Check if works
+            # button_options = ["left", "right"]
+            # button_order = random.sample(button_options, len(button_options))
+
+            # self.global_log.loc[0] = button_order # see if this works
+
+            # self.button_map = {
+            #     "no": button_order[0], # Session because it's an input and the super class is not yet initialized
+            #     "yes": button_order[1],
+            # }
+
+        else: 
+            self.dmx = pd.read_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t")
+
+        self.win.color = self.config.window.color  # Set window background color
 
         # Hide mouse cursor
         self.win.mouseVisible = False
     
+    # def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None):
+    #     super().__init__(output_str, output_dir=output_dir, settings_file=settings_file)
+        
+    #     # Load configuration file
+    #     config_path = os.path.join(os.path.dirname(__file__), os.pardir, config_file)
+    #     self.config = OmegaConf.load(config_path)
+        
+    #     # Setup visual elements
+    #     self.setup_visual_elements()
+        
+    #     # Generate experiment design
+    #     self.dmx = self.create_design()
+        
+    #     # Determine which button does what # Check if works
+    #     button_options = ["left", "right"]
+    #     button_order = random.sample(button_options, len(button_options))
+    #     self.button_map = {
+    #         "no": button_order[0], # Session because it's an input and the super class is not yet initialized
+    #         "yes": button_order[1],
+    #     }
+
+    #     # Hide mouse cursor
+    #     self.win.mouseVisible = False
+    
     def setup_visual_elements(self):
         """Set up all visual elements needed for the experiment"""
         config = self.config
-        
+
         # Create ball
         self.ball = visual.Circle(
             win=self.win,
@@ -698,15 +724,29 @@ class BallHueSession(Session):
         design_matrix["ball_start_colors"] = ball_start_colors
         design_matrix["itis"] = itis
 
+        # Determine which button does what # Check if works
+        button_options = ["left", "right"]
+        button_order = random.sample(button_options, len(button_options))
+
+        # self.global_log.loc[0] = button_order # see if this works
+
+        # self.button_map = {
+        #     "yes": button_order[1],
+        #     "no": button_order[0], # Session because it's an input and the super class is not yet initialized
+        # }
+
+        design_matrix["change_detect_button"] = [button_order[0]] * (len(design_matrix) // 2) + [button_order[1]] * (len(design_matrix) // 2)
+        # design_matrix["change_detect_button"] = [config.button_map["no"], config.button_map["yes"]] * (n_trials // 2)  # Alternate button order
+
         # Save the rich design matrix to a TSV file
         design_matrix.to_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t", index=False)
         print(f"Design matrix saved to {self.output_dir} as TSV")
 
         return design_matrix # used to be trial_params
         
-    def create_trials(self, n_trials=None):
+    def create_trials(self, n_trials=None, run_no:int=None):
         """Create trials for the experiment"""
-        from functions.utilities import truncated_exponential_decay
+        from functions.utilities import truncated_exponential_decay, trial_subset
 
         instruction_trial = InstructionTrial(session=self,
                                             # trial_nr=0,
@@ -717,21 +757,24 @@ class BallHueSession(Session):
                                             keys=['space'], 
                                             draw_each_frame=False)
         
-        itis = truncated_exponential_decay(min_iti=self.config.timing.min_iti,
-                                           truncation_cutoff=self.config.timing.max_iti,
-                                           size=n_trials)
+        # itis = truncated_exponential_decay(min_iti=self.config.timing.min_iti,
+        #                                    truncation_cutoff=self.config.timing.max_iti,
+        #                                    size=n_trials)
         # Create trials
         self.trials = [instruction_trial]
         trial_counter = 1
 
         for trial_nr in range(n_trials):
+        # TUrn into run-based selection
+        # for trial_nr in range(start_trial, n_trials, )
             # Define phase durations
             phase_durations = [
                 self.config.timing.fixation_dur,      # Fixation phase
                 self.config.timing.interactor_dur,    # Interactor line display
                 self.config.timing.occluder_dur,      # Occluder display
                 self.config.timing.ballmov_dur,       # Ball movement
-                itis[trial_nr],                   # Inter Trial Interval (the 2 was a 1 first)
+                # itis[trial_nr],                   # Inter Trial Interval (the 2 was a 1 first)
+                self.dmx["itis"][trial_nr],                   # Inter Trial Interval (the 2 was a 1 first)
                 # itis[trial_nr - 1],                   # Inter Trial Interval (the 2 was a 1 first)
             ]
 
@@ -788,12 +831,25 @@ class BallHueSession(Session):
         # Close experiment
         self.close()
 
+
+
+
 if __name__ == "__main__":
-    settings = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
+    parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')
+    parser.add_argument('--subject', type=str, required=True, help='Subject identifier')
+    parser.add_argument('--run', type=int, default=1, help='Run number for the experiment (default: 1)')
+
+    args = parser.parse_args()
+
+    runs_per_session = 4
+    total_trials = 320
+
+    config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
 
     # Create and run the session
-    session = BallHueSession(output_str="sub-karbonkel", config_file=settings, settings_file=settings)
+    # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
+    session = BallHueSession(output_str=args.subject, config_file=config_path, run_no=args.run)
     
-    session.create_trials(n_trials=len(session.dmx["trial_option"]))  # Reduce number of trials for testing
+    session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
 
     session.run()

@@ -10,7 +10,7 @@ window:
   screen: 0  # The screen number to display the window on (0 is usually the primary screen).
   winType: pyglet  # The backend to for the window (e.g., 'pyglet', 'pygame').
   allowStencil: false  # Whether to allow stencil buffer (used for advanced graphics).
-  color: [-0.75, -0.75, -0.75]          # The background color of the window (in RGB space). # doesn't matter anymore
+  color: [-0.75, -0.75, -0.75]          # The background color of the window (in RGB space).
   colorSpace: rgb  # The color space for the background color (e.g., 'rgb', 'dkl', 'lms').
   backgroundFit: None  # How to fit the background image ('none', 'fit', 'stretch').
   blendMode: "avg"  # The blend mode for drawing (e.g., 'avg', 'add').
@@ -136,9 +136,9 @@ timing:
   task_prompt_dur: 5 # Duration of task prompt display
   post_prompt_iti: 1
   short_break_dur: 30
-  short_break_freq: 3 # 22
+  short_break_freq: 22
   long_break_dur: 60
-  long_break_freq: 6 #88
+  long_break_freq: 88
 
 # =============
 # File Paths
@@ -169,7 +169,7 @@ various:
 experiment:
   name: "physicspred"
   psychopy_version: "2024.2.4"
-  n_trials: 10
+  n_trials: 320
   # n_trials: 32
   n_trials_spatloc: 12
   feedback_freq: 5          # Trials between feedback moments

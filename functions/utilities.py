@@ -428,6 +428,23 @@ def create_balanced_trial_design(trial_n=None, change_ratio:list = [True, False]
         return _clean_trial_options(df)
             
         # return output_df.sample(frac=1).reset_index(drop=True)
+
+def trial_subset(total_trials, runs, this_run):
+    """
+    Get the trial subset for a given trial number.
+    N.B. 1-based indexing is used for `this_run`.
+    """
+    trials_per_run = total_trials // runs
+    if this_run < 1 or this_run > runs:
+        raise ValueError(f"this_run must be between 1 and {runs}, got {this_run}")
+
+    start = trials_per_run * (this_run - 1)
+    end = start + trials_per_run
+
+
+    return list(range(start, end))
+
+
 # TODO: ADAPT SO THAT THE DARKER BALLS ARE NOT SO EXTREME AND THETHE LIGHTER BALLS ARE A TINY BIT MORE EXTREME. 
 # ALSO CHECK IF THIS EMPIRICAL FINDING BASED ON 1 SINGLE PILOT PARTICIPANTS ALIGNS WITH WHAT IS KNOWN ABOUT THE
 # NONLINEARITY OF THE LUMINANCE FUNCTION.

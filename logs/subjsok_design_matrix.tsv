@@ -1,0 +1,353 @@
+trial_type	trial_option	bounce	phant_bounce_direction	ball_change	ball_luminance	task_prompt	ball_speeds	ball_start_colors	itis	change_detect_button
+interactor	45_top_r	True		False		False	8.31021908827	0.821628493188	1.54685408614	right
+empty	none_u	False		True	0.06	True	8.91199230126	0.782981310653	1.34412119895	right
+empty	none_d	True	left	True	0.06	False	9.0180518395	0.8741745211	2.18117768819	right
+empty	none_l	False		False		False	8.80825536507	0.841811068154	2.07951830488	right
+empty	none_r	False		True	0.06	False	8.74061388115	0.774266359148	1.19148533491	right
+empty	none_d	False		False		False	8.12960892007	0.892130261763	1.04919716629	right
+empty	none_d	False		False		False	8.4734221081	0.927557164477	1.96287116914	right
+empty	none_r	False		True	0.06	False	8.46314002294	0.821598428395	1.32942434363	right
+interactor	45_top_u	True		False		False	8.57975804786	0.805006028176	2.47287594912	right
+interactor	45_top_r	True		False		False	8.28692750154	0.849890381836	1.45701072855	right
+empty	none_l	False		False		False	8.57783003377	0.814199109064	2.95951567401	right
+interactor	45_top_u	False		True	0.06	False	8.26041544106	0.835710608763	1.52092920329	right
+interactor	135_bottom_d	False		False		False	9.01723942955	0.844684339678	1.59608610596	right
+empty	none_u	True	right	False		False	8.16634230807	0.840908747525	1.18632752871	right
+interactor	135_bottom_r	True		False		False	8.95920011367	0.834957343754	2.17582250175	right
+interactor	135_bottom_d	False		True	0.06	True	8.43274221874	0.835962751673	1.13472327533	right
+interactor	45_bottom_d	False		False		False	8.14320070395	0.870276315118	1.9744690963	right
+empty	none_u	True	right	True	0.06	False	8.53711179636	0.817375909198	1.3049572379	right
+empty	none_r	True	right	False		False	8.70177408437	0.940044335976	3.02905528307	right
+interactor	135_top_l	False		False		False	8.88991993702	0.856482889101	4.08775708473	right
+empty	none_r	True	right	True	0.06	False	8.38519668435	0.915669948577	1.12872932587	right
+empty	none_d	False		True	0.06	False	8.65608696595	0.813946258573	1.66450187249	right
+empty	none_u	False		False		False	8.6854008641	0.870521853306	1.48413548666	right
+interactor	45_bottom_d	True		False		False	8.48646161513	0.789217826425	2.97641661479	right
+empty	none_l	False		True	0.06	False	8.31382859346	0.720779918175	1.27073603208	right
+empty	none_u	True	right	True	0.06	False	8.67815701888	0.87415489042	1.09458909231	right
+empty	none_l	False		True	0.06	False	8.8132742908	0.831469907659	1.25547057962	right
+empty	none_d	False		True	0.06	False	8.47551258739	0.787673512352	1.13430660293	right
+interactor	45_bottom_l	True		False		False	8.41290164998	0.91399947769	1.7460191825	right
+interactor	45_bottom_d	False		True	0.06	False	8.2315055277	0.858349963264	2.62236976279	right
+empty	none_u	True	right	False		False	8.20624990526	0.830789136365	1.88416239145	right
+empty	none_r	True	right	False		False	8.1315038131	0.901409341039	1.66574137865	right
+empty	none_d	False		True	0.06	False	8.68412648873	0.929222958398	2.83910871846	right
+interactor	45_top_u	False		True	0.06	False	8.14508445923	0.816538240881	1.30399934063	right
+empty	none_d	False		True	0.06	True	8.40727065429	0.892026893576	1.02091630953	right
+empty	none_r	False		False		False	8.53800207535	0.897482507647	1.63510238647	right
+empty	none_d	False		True	0.06	False	8.31179803116	0.868349965232	4.26470844065	right
+interactor	135_top_l	False		True	0.06	False	8.20410234445	0.930198830393	1.14944588661	right
+empty	none_u	True	right	True	0.06	False	8.21659640147	0.923543032162	3.34128791144	right
+interactor	45_bottom_d	True		True	0.06	False	8.77762854519	0.826866978749	1.62525621177	right
+interactor	135_top_u	True		False		False	8.75592590759	0.770546077652	1.80027323395	right
+interactor	45_top_u	False		True	0.06	False	8.58861589282	0.736017125728	2.02312561579	right
+interactor	135_bottom_d	False		False		False	8.54649932692	0.83167435983	1.58153097358	right
+empty	none_l	True	left	False		False	8.21126473336	0.861697751257	3.31574261635	right
+interactor	45_top_r	True		False		False	8.32276489244	0.960865970007	2.35811194231	right
+empty	none_r	True	right	False		False	8.53453647986	0.845680325176	1.08534596922	right
+interactor	135_bottom_r	False		True	0.06	False	8.56582937001	0.839559842096	1.23240819601	right
+interactor	135_bottom_r	True		True	0.06	False	8.3470741558	0.902904210117	1.83018078213	right
+empty	none_r	True	right	False		False	9.22570154455	0.802830829554	1.57615078987	right
+interactor	135_top_l	True		False		False	8.56401335738	0.893917407235	1.96189834066	right
+empty	none_r	True	right	True	0.06	False	8.55089464608	0.92753751727	1.20094388823	right
+interactor	135_bottom_r	False		True	0.06	True	8.56195301783	0.86013282696	1.39702837392	right
+empty	none_u	True	right	True	0.06	False	8.02793120847	0.797991450116	1.40214706593	right
+empty	none_r	False		False		False	8.77477730786	0.863036136131	2.81909439383	right
+interactor	45_bottom_l	True		True	0.06	False	8.05564865792	0.856387936888	1.22774414222	right
+empty	none_l	True	left	False		False	8.31388904252	0.840422720248	1.86788615255	right
+interactor	45_top_r	True		False		True	8.3613065017	1.01113668858	1.24540985483	right
+interactor	45_top_u	False		False		False	8.7762210111	0.813747684564	1.26708091964	right
+interactor	45_top_u	False		False		True	8.90832044255	0.77490170464	3.16304422166	right
+interactor	45_top_u	True		False		False	8.32976120376	0.848831689789	2.74880837277	right
+empty	none_r	True	right	False		False	8.36868887004	0.80761747946	1.17304444099	right
+empty	none_d	True	left	True	0.06	False	8.95433868389	0.788738546659	1.45524618637	right
+empty	none_l	False		True	0.06	False	8.46750981652	0.842243908489	2.04513226292	right
+empty	none_r	False		False		False	8.3719077184	0.854217332771	1.32681018322	right
+interactor	135_top_u	False		False		False	8.63311223266	0.785946160265	1.08521810943	right
+interactor	45_bottom_l	False		True	0.06	False	8.44366156347	0.894169932273	4.57470548242	right
+empty	none_d	False		True	0.06	False	8.05119988782	0.872695707983	1.49658399809	right
+interactor	135_bottom_d	False		False		False	8.74646785929	0.852489218623	1.62633969141	right
+interactor	45_bottom_l	True		False		False	8.57616101335	0.905429928105	1.52788056294	right
+interactor	45_top_r	False		True	0.06	True	8.58016537502	0.870656753993	1.46841038973	right
+interactor	45_bottom_d	False		True	0.06	True	8.10860736431	0.860599351972	1.49362382837	right
+interactor	45_top_u	True		True	0.06	False	8.4410500204	0.742284109888	1.4382413612	right
+interactor	135_bottom_d	False		False		False	8.66885240166	0.84322260164	1.27632083852	right
+empty	none_u	True	right	False		False	8.15076029064	0.853670723014	1.84499169957	right
+interactor	135_top_u	True		False		True	8.330512708	0.825285006998	1.50835529749	right
+interactor	45_top_u	False		False		False	8.41989663046	0.921749770482	2.66361831458	right
+empty	none_r	False		True	0.06	True	9.02078153548	0.864712173311	2.24742908584	right
+interactor	45_top_r	True		True	0.06	False	8.28967648432	0.841775673019	4.92364004276	right
+empty	none_r	False		True	0.06	False	8.47421357676	0.94171157851	1.03405942043	right
+interactor	45_top_r	True		False		False	8.8520326887	0.793236186176	1.01140024531	right
+empty	none_l	False		True	0.06	True	8.58650431459	0.955484103037	1.64453391728	right
+empty	none_d	True	left	True	0.06	False	8.42207145205	0.826636414659	1.28897326337	right
+empty	none_r	False		False		False	8.78319272505	0.860118619522	2.17627553345	right
+interactor	135_top_u	True		False		False	8.27530948572	0.905352879647	2.98054798717	right
+empty	none_r	False		False		False	8.78887055571	0.753991066493	1.34608566252	right
+empty	none_u	True	right	False		False	8.39243047802	0.887328165328	1.4958750938	right
+empty	none_d	True	left	False		False	8.44051608732	0.858781745313	2.29888046747	right
+interactor	135_top_l	False		False		False	8.55632271118	0.811290220051	1.94461708502	right
+interactor	45_bottom_d	True		True	0.06	False	9.32624293548	0.878323147256	1.74551318437	right
+interactor	45_top_r	True		True	0.06	False	8.56225973569	0.747893358152	1.0216068092	right
+empty	none_u	False		True	0.06	False	8.51098223443	0.82833969604	1.22504324083	right
+empty	none_d	False		False		False	8.98900784992	0.86613443933	1.52244626566	right
+interactor	45_bottom_d	True		True	0.06	False	8.36700386817	0.892941458614	5.07458704789	right
+interactor	135_top_l	True		False		False	8.57119651188	0.858784522724	1.73365887365	right
+empty	none_r	True	right	True	0.06	False	8.76256626489	0.786342749184	2.63516864339	right
+interactor	45_bottom_d	False		True	0.06	False	8.30953202928	0.812610401332	2.34790634839	right
+empty	none_d	True	left	True	0.06	False	8.33062400701	0.863755494483	1.00398338846	right
+interactor	135_bottom_d	True		False		False	8.64099204945	0.781169360912	1.9653026363	right
+empty	none_r	False		False		False	8.16920196376	0.80309110546	1.10618822476	right
+empty	none_u	True	right	False		False	8.65105054101	0.769690126495	3.15406267882	right
+empty	none_l	True	left	True	0.06	False	8.43505087991	0.83553833352	2.79470204146	right
+interactor	45_top_u	True		True	0.06	False	8.50154597779	0.766863803163	2.89590864377	right
+empty	none_r	False		True	0.06	False	8.86864918962	0.862532073922	1.36434167048	right
+interactor	135_bottom_r	True		False		True	8.27479651672	0.831429049704	1.27266879649	right
+interactor	45_bottom_l	True		False		False	8.84930637063	0.883932517268	1.20772160317	right
+empty	none_l	False		False		False	8.59375387777	0.862305412606	2.64508434992	right
+interactor	135_top_l	True		True	0.06	False	8.68014601638	0.86622480529	1.32048178226	right
+empty	none_r	False		True	0.06	False	8.84231958305	0.872746912021	4.00189781725	right
+interactor	45_bottom_d	False		False		False	8.47011497497	0.893380119637	2.22580539155	right
+interactor	45_top_r	False		False		False	8.31892456289	0.849220523689	2.34028028194	right
+empty	none_l	False		False		False	8.62176078464	0.86221155883	1.47917058687	right
+interactor	135_top_u	True		True	0.06	False	8.3379902631	0.914739701969	3.555299962	right
+empty	none_l	True	left	False		True	8.47742661402	0.862758201264	4.77731095556	right
+interactor	45_bottom_l	False		False		False	8.23844672964	0.84989473105	1.97355044814	right
+interactor	135_bottom_r	True		True	0.06	False	8.44382175322	0.895521746095	2.03755026196	right
+interactor	135_bottom_d	False		True	0.06	False	8.8662006491	0.841631828752	1.76373097737	right
+empty	none_u	True	right	True	0.06	False	8.39199306998	0.864770945798	1.58382218959	right
+interactor	45_top_r	False		True	0.06	False	7.85852830319	0.865005097265	1.10072344411	right
+interactor	135_top_l	False		False		False	8.81407169073	0.823125313631	2.07916885258	right
+empty	none_l	True	left	False		False	8.46283079159	0.813718607841	1.26756802549	right
+interactor	135_bottom_r	True		True	0.06	False	8.53631768145	0.849957853307	1.5402453295	right
+interactor	45_top_r	False		False		False	8.74326539189	0.943078380002	1.28015336716	right
+empty	none_u	False		False		True	8.77566625967	0.841834500248	2.81864291823	right
+interactor	45_top_u	True		False		False	8.43739917886	0.850073113789	1.0993280371	right
+empty	none_u	True	right	True	0.06	False	8.26258019349	0.842814153418	1.66257661308	right
+interactor	45_top_r	False		False		False	8.69566390633	0.870001556325	1.58652313352	right
+empty	none_l	True	left	True	0.06	False	8.38384331391	0.812864113349	2.79560827376	right
+interactor	135_bottom_r	True		False		False	8.62058377212	0.851375330109	1.23775675847	right
+empty	none_r	True	right	True	0.06	False	8.41872722571	0.755861818606	2.35520863231	right
+interactor	135_bottom_d	True		True	0.06	False	8.68432793135	0.737692159486	2.33474976708	right
+interactor	135_bottom_r	False		True	0.06	False	8.90290168867	0.80186049949	2.08713403589	right
+interactor	135_top_l	True		True	0.06	False	8.62164571139	0.862763775854	1.14999154408	right
+interactor	135_top_u	False		True	0.06	False	8.06703752127	0.922817642143	2.42814957627	right
+interactor	45_bottom_d	True		False		False	8.2431030951	0.863336819383	1.22914885162	right
+empty	none_d	False		False		False	8.46600238196	0.805174956486	1.13537969307	right
+empty	none_d	True	right	False		True	8.41475336106	0.878530118973	1.40636940157	right
+interactor	45_top_r	True		True	0.06	False	8.66037319463	0.86826789734	2.90659168082	right
+interactor	45_bottom_d	False		False		False	8.72814060856	0.769931632535	2.37462831078	right
+interactor	45_top_u	True		True	0.06	False	8.953497667	0.84963196049	2.22914353971	right
+empty	none_u	True	left	True	0.06	True	8.56603975706	0.832457499951	2.25978819712	right
+empty	none_d	False		True	0.06	False	7.96658895064	0.896044891956	1.70114890891	right
+empty	none_l	True	left	True	0.06	False	8.2288113734	0.834498669116	1.61443112675	right
+empty	none_d	True	left	False		False	9.01063306704	0.746891592843	1.0223285879	right
+interactor	135_top_u	False		True	0.06	False	9.0560063163	0.903386435252	1.20023654054	right
+empty	none_u	False		False		False	8.21440726406	0.863252640012	1.32925036259	right
+empty	none_l	True	left	True	0.06	False	8.70419975824	0.87737339734	1.581405302	right
+empty	none_r	True	right	False		False	8.42449742823	0.878340097541	2.52702469829	right
+empty	none_d	True	left	True	0.06	False	8.64213111977	0.799549242338	2.14215149075	right
+empty	none_u	True	right	False		False	8.34938678767	0.772116027606	2.67280664955	right
+empty	none_l	False		True	0.06	False	8.41345951135	0.774881932861	1.0066782821	right
+interactor	45_bottom_d	True		False		False	8.59547902871	0.876147425184	1.17115169332	right
+interactor	135_top_u	True		False		False	8.14274637359	0.838003771606	1.82766923638	right
+interactor	135_top_l	False		True	0.06	False	8.60881341416	0.832820887314	2.38140595126	right
+interactor	135_bottom_r	True		True	0.06	False	8.5965050808	0.862855067264	1.62638071545	right
+interactor	135_bottom_d	False		False		False	8.44346925274	0.795728601533	1.63426643623	right
+interactor	45_bottom_d	True		True	0.06	False	8.60782543671	0.825719976397	5.41409212503	right
+interactor	135_top_l	True		True	0.06	False	8.82061706608	0.879513487606	1.12229458878	right
+empty	none_r	True	right	True	0.06	False	8.21755621366	0.940361874077	2.35941114352	right
+empty	none_r	True	right	True	0.06	False	8.47414515172	0.780780305449	1.26050837104	right
+interactor	135_bottom_d	False		True	0.06	False	8.88003359598	0.852876507698	3.00577098845	right
+interactor	135_top_l	False		False		False	8.48630419116	0.804465878804	1.91970590798	right
+empty	none_d	True	left	True	0.06	False	7.96999388412	0.859205298376	2.95276828195	right
+empty	none_l	False		True	0.06	False	8.30211506603	0.852283279327	2.92897113842	right
+empty	none_u	True	right	True	0.06	False	8.52531501046	0.887812542126	1.29594474204	right
+interactor	45_bottom_l	False		False		False	8.64258829209	0.884550697727	3.59625437934	right
+empty	none_u	False		False		False	8.38388183368	0.813280428215	1.3732375167	right
+empty	none_u	False		False		False	8.39947258089	0.849955133227	4.08042931406	right
+interactor	45_bottom_l	False		False		False	8.53935558098	0.882199468015	1.55537003325	right
+interactor	135_top_u	False		True	0.06	False	8.66012499382	0.887424849396	2.19555547816	right
+interactor	45_top_r	False		True	0.06	False	8.84034695442	0.867932616711	1.649761514	right
+interactor	135_top_l	True		True	0.06	True	8.40024871232	0.917375874457	1.5205330794	right
+interactor	45_bottom_l	False		True	0.06	False	8.63502995252	0.828707461494	1.17445801393	right
+interactor	135_top_u	True		True	0.06	False	8.55170836804	0.87342401141	2.82313074255	right
+interactor	135_bottom_r	True		False		False	8.83381252734	0.838170365357	1.41692659009	right
+empty	none_u	False		False		False	8.25251295721	0.915711828866	1.3568160832	right
+interactor	45_top_u	True		True	0.06	False	8.21087295572	0.881623833751	1.34365540549	right
+interactor	135_top_u	True		False		False	8.39440894194	0.770963207734	2.57800983769	left
+empty	none_l	True	left	False		False	8.6820884271	0.964700136083	1.21359433197	left
+interactor	135_bottom_d	True		True	0.06	False	8.56206340723	0.809111457265	1.18028922892	left
+interactor	45_top_r	False		False		False	8.68378334125	0.855272683033	2.23968317256	left
+empty	none_l	True	left	False		False	8.85140090312	0.791326035986	1.45940814053	left
+empty	none_r	False		True	0.06	False	8.57517300691	0.893061862934	1.01011034048	left
+interactor	135_bottom_d	True		True	0.06	False	8.2969544124	0.885781579289	2.22256603609	left
+interactor	45_top_u	False		True	0.06	False	8.46463120478	0.821840586925	1.35200362103	left
+empty	none_l	True	left	False		False	8.92159179418	0.896241946506	1.67342058886	left
+interactor	135_bottom_d	False		True	0.06	False	8.65477472817	0.865521424641	2.69597642076	left
+empty	none_d	False		True	0.06	False	8.05638134882	0.916291392868	2.30115308627	left
+interactor	45_bottom_l	False		False		False	8.13205365419	0.869752350425	1.22472809156	left
+empty	none_u	False		True	0.06	False	8.66626632443	0.815438577828	1.00818202283	left
+empty	none_u	True	right	False		False	8.43875071657	0.837264608656	2.3027416734	left
+empty	none_d	True	left	False		False	7.95946609143	0.808783065967	1.9589576001	left
+empty	none_l	True	left	False		False	8.19894358351	0.808544367009	1.26258715366	left
+empty	none_r	True	right	False		False	8.42646403229	0.762129932709	1.35123385221	left
+interactor	45_top_r	True		False		False	8.29719686496	0.762300053426	1.71706799216	left
+interactor	45_top_u	True		False		False	8.75453074273	0.937246408345	1.52558922171	left
+interactor	135_top_u	False		False		False	8.34450602989	0.858995023724	8.11901701214	left
+interactor	135_top_l	True		False		False	8.45933668975	0.801745503443	1.64046315078	left
+interactor	45_top_u	False		False		False	8.50132086468	0.835468586805	1.33689248685	left
+empty	none_r	True	right	True	0.06	False	8.57792091244	0.90861239052	1.59320614486	left
+interactor	45_bottom_l	False		False		True	8.04795905884	0.86605226184	1.18789538696	left
+interactor	45_top_r	False		True	0.06	False	8.4601314109	0.803084873258	2.00847312037	left
+empty	none_u	False		True	0.06	False	8.71289964751	0.88710293365	1.11621690649	left
+interactor	45_top_u	False		True	0.06	False	8.81403789154	0.839943400693	2.40566482685	left
+interactor	45_bottom_l	True		True	0.06	False	8.55167819298	0.812143168761	1.80363047128	left
+empty	none_r	False		False		False	8.67449553812	0.789819084258	1.51740066788	left
+interactor	135_bottom_r	False		False		False	8.1192438941	0.846174938857	2.06369593199	left
+empty	none_l	True	left	True	0.06	False	8.5583924262	0.841749200696	3.14523659986	left
+empty	none_l	True	left	False		False	8.70419675379	0.891343447713	1.46312925544	left
+interactor	135_bottom_r	False		False		False	8.79303912418	0.816260431341	1.30947337284	left
+interactor	135_bottom_d	False		True	0.06	False	8.69339427094	0.846883355232	2.53480785645	left
+interactor	45_top_u	True		True	0.06	True	8.58736392304	0.874585601327	2.11088498988	left
+empty	none_l	False		False		False	8.65942929648	0.896921409134	3.37809977344	left
+empty	none_d	True	left	False		False	8.70921502647	0.817428029783	1.61641466202	left
+empty	none_d	True	left	False		False	8.55833309716	0.800052001699	1.25167381009	left
+interactor	45_bottom_d	True		True	0.06	True	8.40712442627	0.872295711263	1.39008817761	left
+interactor	45_bottom_l	True		True	0.06	True	8.8506236136	0.860099061316	1.48673349626	left
+interactor	45_bottom_l	True		True	0.06	False	8.54001291444	0.843611329388	1.81348742175	left
+empty	none_d	False		False		False	8.09770274202	0.879463722452	1.00101705238	left
+interactor	135_bottom_d	True		False		False	9.15092793731	0.913927856667	1.18255874352	left
+interactor	135_bottom_d	True		True	0.06	False	8.64881005923	0.786228620536	1.55171665727	left
+interactor	135_top_u	False		False		False	8.74628549596	0.785851119642	1.55055469638	left
+interactor	135_bottom_d	False		True	0.06	False	8.75035950621	0.770344412928	2.42150808285	left
+empty	none_u	False		False		False	8.60400890904	0.849817414537	2.16392693241	left
+empty	none_l	False		False		False	8.23360404345	0.845508042375	3.62875220674	left
+interactor	135_top_l	True		False		False	8.34947873899	0.855357158773	3.72120822786	left
+interactor	45_bottom_d	False		True	0.06	False	8.43307280027	0.838848797165	1.75268285436	left
+empty	none_r	False		True	0.06	False	7.96160609226	0.88037261749	1.53762890178	left
+empty	none_d	False		True	0.06	False	8.53185439076	0.795114791389	1.23893816944	left
+empty	none_u	True	right	False		False	8.63568008793	0.846275556648	2.35040001244	left
+interactor	45_top_r	False		False		False	8.5729905502	0.891055258849	2.64389648741	left
+empty	none_u	True	right	False		False	8.2867331014	0.831092206653	1.06037435515	left
+interactor	45_bottom_l	False		True	0.06	False	8.16415065236	0.850251746221	1.4500835591	left
+empty	none_u	False		True	0.06	False	8.33648561684	0.884660150527	1.2188746352	left
+interactor	135_bottom_r	False		True	0.06	False	8.47009427268	0.840236609493	1.59166760431	left
+empty	none_l	False		True	0.06	False	8.33106809086	0.683198907982	2.07719425141	left
+interactor	45_bottom_d	True		False		False	8.8401686997	0.805097113255	1.96667606659	left
+empty	none_l	False		True	0.06	False	8.90328500959	0.792348712293	1.57590024282	left
+interactor	135_bottom_r	False		False		False	8.60416066727	0.93396034068	2.22110393524	left
+empty	none_d	True	left	False		False	7.82990469824	0.911923670532	2.12983022297	left
+empty	none_l	True	left	True	0.06	False	8.07681442466	0.792787936387	1.04562854091	left
+empty	none_u	False		True	0.06	False	8.30077713135	0.901551399381	1.04078968639	left
+interactor	135_top_l	True		True	0.06	False	8.23454650875	0.879872366199	1.44489117918	left
+empty	none_u	False		True	0.06	False	8.33206080978	0.814721995352	2.99400111165	left
+empty	none_u	False		True	0.06	False	8.56024354914	0.793303348715	1.01370657687	left
+empty	none_l	False		False		False	8.44845527882	0.860559141678	1.52420842424	left
+empty	none_r	False		True	0.06	False	8.25130385041	0.756227223303	1.27816252626	left
+interactor	135_top_l	True		True	0.06	False	8.92489741133	0.782165983186	2.36349491429	left
+interactor	45_bottom_d	False		False		False	8.78983183092	0.854035888908	1.20296299441	left
+empty	none_l	True	left	True	0.06	False	8.47777027087	0.924513005812	1.06508899915	left
+empty	none_l	True	left	True	0.06	False	8.55449295559	0.799406825379	3.88003869167	left
+empty	none_l	True	left	False		False	8.67144132291	0.839922022475	1.01716802353	left
+empty	none_r	True	right	True	0.06	False	8.12190964203	0.853280247838	2.18190729395	left
+empty	none_d	True	left	True	0.06	False	8.63071767524	0.946412408512	2.52362321364	left
+interactor	45_bottom_d	False		True	0.06	False	8.56061170899	0.887836897334	1.16233644221	left
+empty	none_u	False		False		False	8.4291107331	0.763447046612	1.70109371565	left
+empty	none_l	True	left	True	0.06	False	8.60986734372	0.743458883402	2.14437760643	left
+interactor	135_bottom_r	True		False		False	8.52962875993	0.875441310746	4.6970058714	left
+empty	none_r	False		True	0.06	False	8.51016981	0.890655590125	5.06220127715	left
+interactor	45_bottom_l	True		True	0.06	False	8.67279220459	0.892750363919	3.16538004653	left
+interactor	45_bottom_d	True		True	0.06	False	8.21227317902	0.858636805446	1.06395680329	left
+empty	none_r	False		False		False	8.38712553283	0.794843961124	1.63476116758	left
+interactor	45_top_u	False		False		False	8.3537770681	0.865184607406	2.06423227405	left
+empty	none_r	True	right	True	0.06	False	7.96903107028	0.927745848371	2.80373694553	left
+empty	none_d	True	left	True	0.06	False	8.74221333296	0.851306769834	2.5480463844	left
+interactor	135_bottom_d	True		False		False	8.09403510145	0.790425971332	1.16902619176	left
+empty	none_d	False		False		False	8.49380294304	0.882048203535	1.12585937344	left
+interactor	45_bottom_l	True		True	0.06	False	8.60573788328	0.790067729608	2.62939744627	left
+empty	none_d	True	left	False		False	8.5596542844	0.837984389209	2.24076321141	left
+interactor	135_bottom_r	False		True	0.06	False	8.60693701443	0.853544752483	2.52115464245	left
+interactor	135_top_u	True		False		False	8.48537140997	0.908411625399	1.32173734851	left
+empty	none_d	False		False		False	8.95234843299	0.880455145918	1.23369455355	left
+interactor	135_top_u	False		False		False	8.72359689588	0.789018620624	1.63483646044	left
+empty	none_l	False		True	0.06	False	8.31936116036	0.85602187997	1.4985148453	left
+interactor	45_bottom_l	True		False		False	9.08594345349	0.843586818243	1.53830349639	left
+interactor	45_top_r	False		True	0.06	False	8.44264868316	0.890531249504	1.61212423891	left
+interactor	45_top_u	True		False		False	8.38233498012	0.888241609271	1.77270510766	left
+empty	none_r	True	right	False		True	8.5666376474	0.814895863908	1.81928915114	left
+interactor	135_top_u	False		False		True	8.28337854084	0.867301351224	5.43493713012	left
+interactor	135_bottom_r	False		False		False	8.90892887526	0.860584001631	2.08048984865	left
+empty	none_d	True	left	False		False	8.4306578229	0.811400960302	1.57708935808	left
+empty	none_u	True	right	True	0.06	False	8.58250474457	0.830400500642	2.43885592103	left
+interactor	45_bottom_d	True		False		False	8.51406715439	0.872058919395	2.21459823336	left
+empty	none_u	False		True	0.06	False	8.39201869277	0.832935061071	1.45677208024	left
+interactor	45_bottom_d	False		False		False	7.94114018252	0.78288610386	1.46412909556	left
+empty	none_d	False		True	0.06	False	8.59911521136	0.919224937003	1.02818502596	left
+empty	none_u	True	left	True	0.06	True	8.47972182456	0.86990045463	1.41115499204	left
+empty	none_l	False		False		False	8.05999173337	0.848950697202	1.04749927293	left
+interactor	135_bottom_d	True		False		False	8.51038461062	0.834176446315	5.90343064051	left
+empty	none_d	True	right	False		True	8.15542771271	0.860220754699	1.5791453397	left
+interactor	135_top_u	True		True	0.06	False	8.35983746125	0.87976695193	1.45212274542	left
+empty	none_r	False		False		False	8.41030749267	0.86829866169	1.80648748364	left
+interactor	45_top_r	True		True	0.06	False	8.10211712061	0.810342635369	4.7105718572	left
+interactor	45_top_u	False		False		False	8.56331147661	0.868440383794	2.33170384805	left
+interactor	45_top_r	True		True	0.06	False	8.52832838117	0.914294293843	3.50809239129	left
+empty	none_r	False		False		False	8.46676845405	0.802945320854	1.33279644196	left
+interactor	135_bottom_r	False		True	0.06	False	8.41679154243	0.867236125495	1.11870513634	left
+interactor	135_top_u	True		True	0.06	False	8.33885692617	0.893598299164	2.02628352928	left
+interactor	135_top_u	False		True	0.06	False	8.33211973762	0.896647217828	1.03913782299	left
+empty	none_l	False		True	0.06	False	8.59045710747	0.919525199945	1.80506142843	left
+empty	none_d	True	left	True	0.06	False	8.43701289937	0.896739296008	1.19706193051	left
+empty	none_d	False		False		False	8.24652998607	0.781189292583	2.42810180338	left
+interactor	135_top_l	False		True	0.06	False	8.78134838501	0.900374202577	2.72752046215	left
+interactor	135_top_u	False		False		False	8.80127440409	0.830304810551	1.2932619279	left
+empty	none_l	True	left	True	0.06	True	8.77533493592	0.869416802028	2.13449101331	left
+empty	none_l	False		False		False	8.4455039725	0.888610972877	1.78834980472	left
+empty	none_r	False		True	0.06	True	8.156686232	0.85926433413	1.07452520505	left
+empty	none_r	False		False		True	8.36778755509	0.890342825388	1.27199342807	left
+empty	none_d	False		False		True	8.573152067	0.829715067788	1.73742517189	left
+empty	none_u	True	right	False		False	8.59576203049	0.819218944585	3.07808989592	left
+empty	none_r	True	right	True	0.06	False	8.66864369952	0.89340460525	1.61840158045	left
+empty	none_l	True	left	False		True	8.8243619834	0.804738993884	1.62993896387	left
+interactor	135_bottom_r	True		False		False	8.7760007839	0.831887074019	3.84835621708	left
+interactor	135_bottom_d	False		False		True	8.7880406683	0.771929890244	1.03272233531	left
+empty	none_d	False		False		False	8.13464000147	0.791604093643	1.17101196654	left
+empty	none_r	False		True	0.06	False	8.5378539741	0.923748552068	1.29848269116	left
+empty	none_u	False		True	0.06	False	8.22545452521	0.896049727094	1.13843604697	left
+empty	none_d	True	left	True	0.06	False	8.59262167338	0.755962397136	1.96771086527	left
+empty	none_u	False		True	0.06	False	8.88398182347	0.890673354705	2.08244371537	left
+empty	none_d	False		False		False	8.66485895523	0.783188333319	2.4249354057	left
+interactor	135_top_u	True		True	0.06	False	8.50047977451	0.822383025487	2.48087093431	left
+empty	none_u	True	right	True	0.06	False	8.61646688765	0.875703251498	1.01652087551	left
+interactor	45_top_u	True		True	0.06	False	8.4187955864	0.822669449896	1.24113523541	left
+interactor	45_top_r	False		True	0.06	False	8.08316636628	0.84264176339	2.59255569252	left
+empty	none_r	True	right	False		False	8.30323861637	0.776369163557	4.04438694514	left
+empty	none_l	True	left	False		False	8.18233444416	0.864318579446	1.00741331384	left
+empty	none_l	False		False		False	8.68877361868	0.814084060309	1.04738291352	left
+empty	none_u	False		False		False	8.41116598239	0.827667725051	3.42010928726	left
+empty	none_u	False		False		False	8.30907558909	0.859462963806	4.58117708499	left
+interactor	45_bottom_d	False		True	0.06	False	8.54402357272	0.948910600296	1.14597959271	left
+interactor	45_bottom_l	True		False		False	8.46064487671	0.878152085668	3.00487033575	left
+interactor	135_top_l	False		True	0.06	False	8.6238021682	0.851702441974	2.56528733716	left
+interactor	135_bottom_d	True		True	0.06	False	8.79541799103	0.963803789466	2.57760570159	left
+interactor	135_top_l	False		False		False	8.52596691083	0.836924971577	2.18174568502	left
+interactor	45_bottom_l	False		False		False	8.21858108155	0.862562602479	2.55168086953	left
+empty	none_l	True	left	True	0.06	False	8.68469002356	0.885558134075	3.81301367249	left
+interactor	135_top_u	False		True	0.06	False	8.360489878	0.883263995002	2.58981901388	left
+empty	none_d	True	left	False		False	8.47814734457	0.898890110455	1.00628936467	left
+interactor	135_bottom_d	True		False		False	8.39088121801	0.788035494757	1.39255025458	left
+interactor	135_top_l	True		False		False	8.56031340359	0.866704892905	2.00856089244	left
+empty	none_d	True	left	False		False	8.77848033859	0.916802787292	1.73366218268	left
+empty	none_u	True	right	True	0.06	False	8.53826207735	0.823353862442	1.2098952572	left
+interactor	45_bottom_l	False		True	0.06	False	8.28061056603	0.813650243409	1.3373798041	left
+empty	none_u	False		False		False	8.73421023858	0.847243277956	2.04905698599	left
+interactor	135_bottom_r	False		False		False	8.53064979827	0.865225494003	1.70962804856	left
+empty	none_r	True	right	False		False	8.37212916241	0.920071036361	2.17430839535	left
+empty	none_r	True	right	False		False	8.8146716268	0.808844220821	1.17752481155	left
+interactor	135_top_l	True		False		True	8.37747949578	0.872318469128	1.31528962847	left
+interactor	135_top_l	False		True	0.06	False	8.60776237461	0.777307855154	2.51618538715	left
+empty	none_d	False		True	0.06	False	8.52085652061	0.903666758014	1.22454230822	left
+interactor	45_bottom_l	False		True	0.06	False	8.18713274673	0.832196938669	1.50442131518	left
+interactor	135_bottom_r	True		True	0.06	False	8.55286176361	0.911028279111	1.51102256478	left
+empty	none_l	False		True	0.06	False	8.69844691784	0.909093733581	1.79604090401	left

@@ -1,5 +1,4 @@
 ########BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP
-
 # TODO: Create a catch trial prompt that occurs after 64 trials, of which 32 contain a ball brightness change
 # , These do not necessarily have to be balanced per block, but rather over the entire experiment. Find a simple way
 # For them to respond, this will be done with an fMRI button box, so likely similar to how I do it with the buttonbox
@@ -33,20 +32,14 @@ from exptools2.core import Session, Trial
 from exptools2.core import PylinkEyetrackerSession
 import pandas as pd
 import os.path as op
+from psychopy.visual import TextStim
+import argparse
 
 #%%
 
 # os.chdir("/Users/wieger.scheurer/exp_venv/lib/python3.10/site-packages/exptools2/experiments/physicspred/")
-
-
-# Add repository paths - update these as needed
-# sys.path.append("/Users/wiegerscheurer/repos/physicspred")
 sys.path.append("/Users/wieger.scheurer/exp_venv/lib/python3.10/site-packages/exptools2")
 sys.path.append("/Users/wieger.scheurer/exp_venv/lib/python3.10/site-packages/exptools2/experiments/physicspred/")
-# sys.path.insert(0, '/Users/wieger.scheurer/miniconda3/envs/exp/lib/python3.10/site-packages/exptools2')
-# sys.path.insert(0, '/Users/wieger.scheurer/miniconda3/envs/exp/lib/python3.10/site-packages/exptools2/experiments/physicspred')
-
-# sys.path.append("D:/Users/wiesch/physicspred_cub6")
 
 # Import custom functions
 from functions.utilities import (
@@ -72,29 +65,128 @@ from functions.physics import (
     get_bounce_dist,
 )
 
+# class InstructionTrial(Trial):
+#     """ Simple trial with instruction text. """
+
+#     def __init__(self, session, trial_nr, phase_durations=[np.inf],
+#                  txt=None, keys=None, draw_each_frame=False, **kwargs):
+
+#         super().__init__(session, trial_nr, phase_durations, draw_each_frame=draw_each_frame, **kwargs)
+
+#         self.trial = "instruction"
+#         self.phase_names = ["instruction"]
+
+#     def draw(self):
+#         # Display intro text for the first trial
+#         self.session.display_text(
+#             text="Ball Hue Experiment Demo\n\nPress 'Space' to start",
+#             keys=["space"],
+#             height=30,
+#             color="white",
+#             pos=(0, 0)
+#         )
+#         self.stop_trial()
+
+class InstructionTrial(Trial):
+    """ Simple trial with instruction text. """
+
+    def __init__(self, session, trial_nr, phase_durations=[np.inf],
+                 txt=None, keys=None, draw_each_frame=False, **kwargs):
+
+        super().__init__(session, trial_nr, phase_durations, draw_each_frame=draw_each_frame, **kwargs)
+
+        self.trial = "instruction"
+        self.phase_names = ["instruction"]
+
+        txt_height = self.session.settings['various'].get('text_height')
+        txt_width = self.session.settings['various'].get('text_width')
+        text_position_x = self.session.settings['various'].get('text_position_x')
+        text_position_y = self.session.settings['various'].get('text_position_y')
+
+        if txt is None:
+            txt = '''Press any button to commence.'''
+
+        self.text = TextStim(self.session.win, txt,
+                             height=txt_height, 
+                             wrapWidth=txt_width, 
+                             pos=[text_position_x, text_position_y],
+                            #  font='Songti SC',
+                             alignText = 'center',
+                             anchorHoriz = 'center',
+                             anchorVert = 'center')
+        self.text.setSize(txt_height)
+
+        self.keys = keys
+
+    def draw(self):
+        self.text.draw()
+        self.session.win.flip()
+
+    def get_events(self):
+        events = super().get_events()
+
+        if self.keys is None:
+            if events:
+                self.stop_phase()
+        else:
+            for key, t in events:
+                if key in self.keys:
+                    self.stop_phase()
+
+
+
 class BallTrial(Trial):
     """Trial for ball movement and hue change paradigm"""
     
-    def __init__(self, session, trial_nr, phase_durations, trial_params, **kwargs):
-        super().__init__(session, trial_nr, phase_durations, **kwargs)
+    def __init__(self, session, trial_nr, phase_durations, trial_params, 
+                 phase_names, draw_each_frame=False, txt=None, keys=None, run_no=None, **kwargs):
+        super().__init__(session, trial_nr, phase_durations, phase_names, draw_each_frame=draw_each_frame, **kwargs)
         
+        self.trial_idx = self.trial_nr # NOT NEEDED Adjust trial index to match design matrix indexing (account for instruction trial)
+
         # Store trial parameters
         self.config = session.config
-        self.win = session.win
-        
+        # self.win = session.win
+
         # Extract trial-specific parameters
-        trial_idx = self.trial_nr % len(trial_params['trials'])
-        self.trial = trial_params['trials'][trial_idx]
-        self.bounce = trial_params['bounces'][trial_idx]
-        self.ball_change = trial_params['ball_changes'][trial_idx]
-        self.ball_color_change = trial_params['ball_color_changes'][trial_idx]
-        self.ball_speed = trial_params['ball_speeds'][trial_idx]
-        self.ball_start_color = trial_params['ball_start_colors'][trial_idx]
-        self.rand_bounce_direction = trial_params['rand_bounce_directions'][trial_idx]
-        
+        self.trial_idx = self.trial_nr % len(session.dmx['trial_option']) # What does this do
+        # if self.trial_idx > 0:
+
+        self.trial = session.dmx['trial_option'][self.trial_idx]
+        self.bounce = session.dmx['bounce'][self.trial_idx]
+        self.ball_change = session.dmx['ball_change'][self.trial_idx]
+        self.ball_color_change = session.dmx['ball_luminance'][self.trial_idx]
+        self.ball_speed = session.dmx['ball_speeds'][self.trial_idx]
+        self.ball_start_color = session.dmx['ball_start_colors'][self.trial_idx]
+        self.rand_bounce_direction = session.dmx['phant_bounce_direction'][self.trial_idx]
+
         # Calculate derived parameters
         self.changed_ball_color = oklab_to_rgb([(self.ball_start_color + self.ball_color_change), 0, 0], psychopy_rgb=True)
         
+        # Preparatory work for task prompt versions
+        txt_height = self.session.settings['various'].get('text_height')
+        txt_width = self.session.settings['various'].get('text_width')
+        text_position_x = self.session.settings['various'].get('text_position_x')
+        text_position_y = self.session.settings['various'].get('text_position_y')
+
+        if txt is None:
+            txt = '''Press any button to continue.'''
+
+        txt = f"Did the ball change brightness?\nPress {self.session.button_map['no']} for NO or {self.session.button_map['yes']} for YES"
+        self.keys = [self.session.button_map["no"], self.session.button_map["yes"]] 
+        # self.response_given = False # This is to check if the response has been given, so that we can stop the phase
+
+        self.text = TextStim(session.win, txt,
+                            height=txt_height, 
+                            wrapWidth=txt_width, 
+                            pos=[text_position_x, text_position_y],
+                            # font='Songti SC',
+                            alignText = 'center',
+                            anchorHoriz = 'center',
+                            anchorVert = 'center')
+        self.text.setSize(txt_height)
+
+
         # Extract start position letter from trial name
         if self.trial[:4] == "none":
             edge_letter = self.trial[-1]
@@ -122,12 +214,11 @@ class BallTrial(Trial):
         self.occluder_exit_moment = None
         
         # Movement clock for tracking timing within phases
-        self.movement_clock = None
+        self.movement_clock = None # I wonder if this is the right place, is it called every trial? or only during __init__
     
     def prepare_trial(self):
         """Prepare the trial - called at the beginning of the trial"""
         # Initialize ball position and color
-        # self.session.ball.pos = np.array(self.start_positions[self.edge])
         self.session.ball.color = np.clip(oklab_to_rgb([self.ball_start_color, 0, 0], psychopy_rgb=True), -1, 1) # Reset ball to start color of this trial
         
         # Set initial velocity
@@ -141,9 +232,13 @@ class BallTrial(Trial):
         self.pre_bounce_velocity = None
         self.ball_change_moment = None
         self.occluder_exit_moment = None
+        self.response_given = False  # Reset response given state for each trial
+        self.response_clock = None  # Reset response clock for each trial
+        self.break_clock = None  # Reset break clock for each trial
     
     def draw(self):
         """Run a single phase of the trial"""
+
         started_rolling = False
         self.session.ball.color = np.clip(oklab_to_rgb([self.ball_start_color, 0, 0], psychopy_rgb=True), -1, 1)
         if self.phase == 0:  # Fixation phase
@@ -157,56 +252,130 @@ class BallTrial(Trial):
             
         elif self.phase == 3:  # Ball movement phase
             if self.movement_clock is None:
-                self.movement_clock = self.session.timer
-                self.ballmov_start = self.movement_clock.getTime()
-            # Keep running this phase until the time is up
-            # while self.movement_clock.getTime() < (p3onset + self.phase_durations[self.phase]):
-            # while (self.movement_clock - p3onset) < self.phase_durations[self.phase]: ### Figure out difference between timer and clock
-            while self.session.timer.getTime() < 0:
-                # Check for quit
-                keys = event.getKeys(keyList=["escape", "q"])
-                if "escape" in keys or "q" in keys:
-                    break
-                
-                # self.session.ball.pos = self.start_positions[]
-                # Draw current frame (used to be after process ball mov)
-                
-                self.session.ball.pos = np.array(self.start_positions[self.edge]) if not started_rolling else self.session.ball.pos
-                self.session.ball.draw()
-
-
-                # Process ball movement
-                self.process_ball_movement()
-                started_rolling = True
-
-                self.draw_screen_elements(self.trial, draw_occluder=True)
-                self.win.flip()
-
+                self.movement_clock = core.Clock()  # Create a new clock for this phase # NOT SURE IF THIS IS OK???
+                self.movement_clock.reset()  # Start from 0
+                self.ballmov_start = 0
+                self.started_rolling = False
+                # Set initial ball position
+                self.session.ball.pos = np.array(self.start_positions[self.edge])
             
-            # Reset movement clock for next trial
-            self.movement_clock = None
+            # Process ball movement for this frame
+            self.process_ball_movement()
+            self.started_rolling = True
+            
+            # Draw everything
+            self.session.ball.draw()
+            self.draw_screen_elements(self.trial, draw_occluder=True)
+
         elif self.phase == 4: # Inter trial interval, perhaps this should be phase 0, but doesn't matter
             self.draw_screen_elements(None)
 
+        elif self.phase == 5:  # Task prompt phase
+            if self.phase_names[self.phase] == "task_prompt":
+                if not self.response_given:  # Only draw if response has not been given yet
+                    self.text.draw()
+                    self.session.win.flip()  # Flip the window to show the text
+                    self.draw_screen_elements(None)
+                else:
+                    # self.session.win.flip() #EDITED, see if this causes the fixation cross to be more dim (very weird)
+                    self.draw_screen_elements(None)
+                # Get start time of phase 5
+                if self.response_clock is None:
+                    self.response_clock = core.Clock()
+                    self.response_clock.reset()  # Reset the clock for response timing
+
+                
+                time_to_respond = self.phase_durations[self.phase] - self.response_clock.getTime() # Get time since movement started + ITI duration
+
+                if not hasattr(self, "last_print_time"):
+                    self.last_print_time = None
+
+                if self.last_print_time is None or abs(time_to_respond - self.last_print_time) >= 0.5:
+                    print(f"Time to respond: {time_to_respond:.2f} seconds")
+                    self.last_print_time = time_to_respond
+            else:
+                if self.break_clock is None:
+                    self.break_clock = core.Clock()
+                    self.break_clock.reset()  # Reset the clock for response timing
+
+                time_to_break = self.phase_durations[self.phase] - self.break_clock.getTime() # Get time since movement started + ITI duration
+
+                if not hasattr(self, "last_print_time"):
+                    self.last_print_time = None
+
+                if self.last_print_time is None or abs(time_to_break - self.last_print_time) >= 1:
+                    self.last_print_time = time_to_break
+
+                # self.session.display_text(text=f"Time for a break, chill it up in here!\n\nTask continues in {time_to_break:.2f} seconds",
+                self.session.display_text(text=f"Time for a break, chill it up in here!\n\nTask continues in {int(time_to_break)} seconds",
+                                        # keys=["space"],
+                                        # duration=self.phase_durations[4],
+                                        duration=1,
+                                        # duration=10,  # for testing
+                                        height=40,
+                                        color="red",
+                                        pos=(0, 350)
+                                        )
+
+        elif self.phase == 6:  # Post task prompt ITI
+            self.draw_screen_elements(None)
+        elif self.phase == 7:  # Short or long break (no conditional needed because you can only have 7 phases if there's a break)
+            if self.break_clock is None:
+                self.break_clock = core.Clock()
+                self.break_clock.reset()  # Reset the clock for response timing
+             # TODO: MAKE THIS MORE SMOOOTH, NOW IT'S LIKE A STROBOSOCOOP WHEN IT REFRESEHS
+            time_to_break = self.phase_durations[self.phase] - self.break_clock.getTime() # Get time since movement started + ITI duration
+
+            if not hasattr(self, "last_print_time"):
+                self.last_print_time = None
+
+            if self.last_print_time is None or abs(time_to_break - self.last_print_time) >= 1:
+                self.last_print_time = time_to_break
+
+            # self.session.display_text(text=f"Time for a break, chill it up in here!\n\nTask continues in {time_to_break:.2f} seconds",
+            self.session.display_text(text=f"Time for a break, chill it up in here!\n\nTask continues in {int(time_to_break)} seconds",
+                                    # keys=["space"],
+                                    duration=self.phase_durations[7],
+                                    # duration=1,
+                                    # duration=10,  # for testing
+                                    height=40,
+                                    color="blue",
+                                    pos=(0, 350)
+                                    )
+            
+    def get_events(self):
+        events = super().get_events()
+        if self.phase == 5 and not self.response_given: # To make sure you can't always skip any phase by pressing a button
+            if self.keys is None:
+                if events:
+                    self.response_given = True
+                    # self.keys = None # to see if this can limit them to only a single response
+            else:
+                for key, t in events:
+                    if key in self.keys:
+                        self.response_given = True
+                        # self.keys = None
+        else: # EDITED perhaps does something but likely not
+            pass
     
     def process_ball_movement(self):
         """Process ball movement for a single frame"""
-        # square_size = self.config.display.square_size
         occluder_radius = self.config.occluder.radius
         ball_radius = self.config.ball.radius
+        
+        # Get elapsed time since ball movement started
+        elapsed_time = self.movement_clock.getTime()
         
         # Apply decay to velocity
         decay_factor = calculate_decay_factor(
             self.ball_speed, 
-            # self.movement_clock.getTime(), 
-            self.phase_durations[3] - self.session.timer.getTime(),  # Use session timer for consistent timing
-            # self.session.timer.getTime(),  # Use session timer for consistent timing
-            self.phase_durations[3],  # Ball movement duration
+            # elapsed_time,  # Time elapsed since movement started
+            self.phase_durations[3] - elapsed_time,  # Time elapsed since movement started
+            self.phase_durations[3],  # Total ball movement duration
             constant=self.config.ball.decay_constant
         )
         
         self.velocity = [self.velocity[0] * decay_factor, self.velocity[1] * decay_factor]
-        # self.velocity = [self.velocity[0] * decay_factor, self.velocity[1] * decay_factor]
         
         # Update ball position
         self.session.ball.pos += tuple([self.velocity[0] * 1, self.velocity[1] * 1])  # Using skip_factor=1
@@ -222,31 +391,32 @@ class BallTrial(Trial):
             if self.bounce and self.trial[:4] == "none":
                 self.velocity, self.bounce_moment, self.pre_bounce_velocity, self.bounced_phantomly = self.handle_phantom_bounce()
             elif not self.bounce and not self.bounced_phantomly:
-                self.bounce_moment = self.movement_clock.getTime()
-                self.bounce = False
-                self.crossed_fixation = True
+                self.bounce_moment = elapsed_time  # Use elapsed_time instead of movement_clock.getTime()
+            self.bounce = False
+            self.crossed_fixation = True
         
         # Check if ball is leaving occluder
         if (np.linalg.norm(self.session.ball.pos) > (occluder_radius / 2) - (ball_radius * 2)
             and self.crossed_fixation and not self.left_occluder):
-            self.occluder_exit_moment = self.movement_clock.getTime()
+            self.occluder_exit_moment = elapsed_time  # Use elapsed_time
             self.left_occluder = True
-            print(f"Ball left occluder at {self.occluder_exit_moment - self.ballmov_start} (i.e. target onset in behav)")
-            # WHY IS THIS NOT PRINTED IN SOME TRIALS? Presumably ones without an interactor
-            # Also try to rewrite it in such way that it's the absolute value, from ball appearance
-            # Now it's a negative, remainder
-        
+            print(f"Ball left occluder at {self.occluder_exit_moment:.3f} (i.e. target onset in behav)")
+
+            idx = self.session.global_log.shape[0] # Check how large log currently is
+            self.session.global_log.loc[idx - 1, 'occluder_exit'] = self.occluder_exit_moment
+
         # Handle ball color changes
         if (self.ball_change and self.crossed_fixation and 
             self.left_occluder and not self.hue_changed):
             # Set the change moment exactly once
             if self.ball_change_moment is None:
-                self.ball_change_moment = self.movement_clock.getTime()
+                self.ball_change_moment = elapsed_time  # Use elapsed_time
 
             # Apply the color change
             self.session.ball.color = self.changed_ball_color
             self.hue_changed = True
-    
+
+
     def handle_normal_bounce(self):
         """Handle normal bounce physics when ball crosses the interactor line"""
         pre_bounce_velocity = self.pre_bounce_velocity
@@ -254,15 +424,13 @@ class BallTrial(Trial):
         
         if self.trial[:2] == "45":
             velocity = collide(_flip_dir(self.edge), 45, pre_bounce_velocity)
-            # velocity = collide((self.edge), 45, pre_bounce_velocity)
-            bounce_moment = self.movement_clock.getTime()
+            bounce_moment = self.movement_clock.getTime()  # This should now work correctly
         elif self.trial[:3] == "135":
             velocity = collide(_flip_dir(self.edge), 135, pre_bounce_velocity)
-            # velocity = collide((self.edge), 135, pre_bounce_velocity)
-            bounce_moment = self.movement_clock.getTime()
+            bounce_moment = self.movement_clock.getTime()  # This should now work correctly
         
         return velocity, bounce_moment, pre_bounce_velocity
-    
+
     def handle_phantom_bounce(self):
         """Handle phantom bounce physics for trials with no interactor"""
         pre_bounce_velocity = self.pre_bounce_velocity
@@ -270,20 +438,17 @@ class BallTrial(Trial):
         
         if self.rand_bounce_direction == "left":
             velocity = _dir_to_velocity(
-                # _rotate_90(_flip_dir(self.edge), "left"), pre_bounce_velocity
                 _rotate_90((self.edge), "left"), pre_bounce_velocity
             )
         elif self.rand_bounce_direction == "right":
             velocity = _dir_to_velocity(
-                # _rotate_90(_flip_dir(self.edge), "right"), pre_bounce_velocity
                 _rotate_90((self.edge), "right"), pre_bounce_velocity
             )
         
-        bounce_moment = self.movement_clock.getTime()
+        bounce_moment = self.movement_clock.getTime()  # This should now work correctly
         return velocity, bounce_moment, pre_bounce_velocity, True
     
     def draw_screen_elements(self, trial_type, draw_occluder=False):
-    # def draw(self, trial_type, draw_occluder=False):
         """Draw screen elements based on the current phase and trial type"""
         # Draw borders
         self.session.left_border.draw()
@@ -326,10 +491,42 @@ class BallHueSession(Session):
         self.setup_visual_elements()
         
         # Generate experiment design
-        self.trial_params = self.create_design()
+        self.dmx = self.create_design()
         
+        # Determine which button does what # Check if works
+        button_options = ["left", "right"]
+        button_order = random.sample(button_options, len(button_options))
+        self.button_map = {
+            "no": button_order[0], # Session because it's an input and the super class is not yet initialized
+            "yes": button_order[1],
+        }
+
         # Hide mouse cursor
         self.win.mouseVisible = False
+    
+    # def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None):
+    #     super().__init__(output_str, output_dir=output_dir, settings_file=settings_file)
+        
+    #     # Load configuration file
+    #     config_path = os.path.join(os.path.dirname(__file__), os.pardir, config_file)
+    #     self.config = OmegaConf.load(config_path)
+        
+    #     # Setup visual elements
+    #     self.setup_visual_elements()
+        
+    #     # Generate experiment design
+    #     self.dmx = self.create_design()
+        
+    #     # Determine which button does what # Check if works
+    #     button_options = ["left", "right"]
+    #     button_order = random.sample(button_options, len(button_options))
+    #     self.button_map = {
+    #         "no": button_order[0], # Session because it's an input and the super class is not yet initialized
+    #         "yes": button_order[1],
+    #     }
+
+    #     # Hide mouse cursor
+    #     self.win.mouseVisible = False
     
     def setup_visual_elements(self):
         """Set up all visual elements needed for the experiment"""
@@ -340,9 +537,11 @@ class BallHueSession(Session):
             win=self.win,
             radius=config.ball.radius,
             edges=32,
-            fillColor=[1, 1, 1],
+            # fillColor=[1, 1, 1], # Perhaps change this? see if it matters?
+            fillColor=[1, 1, .2], # Perhaps change this? see if it matters? doesnt appearas to be the case
             lineColor=None,
-            units='pix'
+            units='pix',
+            autoDraw=False, # THis does not solve anything, True just puts it on top of everything all the time,
         )
         
         # Create borders
@@ -355,7 +554,8 @@ class BallHueSession(Session):
             height=config.display.win_dims[1],
             fillColor='black',
             pos=(-square_size/2 - border_width/2, 0),
-            units='pix'
+            units='pix',
+            autoDraw=True,  # Set to False to control when to draw it
         )
         
         self.right_border = visual.Rect(
@@ -364,7 +564,8 @@ class BallHueSession(Session):
             height=config.display.win_dims[1],
             fillColor='black',
             pos=(square_size/2 + border_width/2, 0),
-            units='pix'
+            units='pix',
+            autoDraw=True,  # Set to False to control when to draw it
         )
         
         self.top_border = visual.Rect(
@@ -373,7 +574,8 @@ class BallHueSession(Session):
             height=border_width,
             fillColor='black',
             pos=(0, square_size/2 + border_width/2),
-            units='pix'
+            units='pix',
+            autoDraw=True,  # Set to False to control when to draw it
         )
         
         self.bottom_border = visual.Rect(
@@ -382,7 +584,8 @@ class BallHueSession(Session):
             height=border_width,
             fillColor='black',
             pos=(0, -square_size/2 - border_width/2),
-            units='pix'
+            units='pix',
+            autoDraw=True,  # Set to False to control when to draw it
         )
 
         # from objects.task_components import (line_45_bottom, line_45_top, line_135_bottom, line_135_top)
@@ -461,33 +664,27 @@ class BallHueSession(Session):
             units='pix'
         )
 
-    def create_design(self):
+    def create_design(self, save_design=True):
         """Create experiment design matrix and extract trial parameters"""
         config = self.config
         verbose = config.experiment.verbose
-        n_trials = config.experiment.n_trials
+        fmri_trials = config.experiment.n_trials
         
         # Create experiment design matrix
         design_matrix = build_design_matrix(
-            n_trials=n_trials,
+            n_trials=fmri_trials,
             change_ratio=[True, False],
             ball_color_change_mean=config.ball.color_change_mean,
-            # ball_color_change_mean=-10, # Debug for ball colour change
             ball_color_change_sd=config.ball.color_change_sd,
             verbose=verbose,
             neg_bias_factor=config.ball.neg_bias_factor,
             neg_bias_shift=config.ball.neg_bias_shift,
+            fmri_task = True,
+            prompt_every = 10, # Add 10% separately balanced task prompt trials
         )
-        
-        check_balance(design_matrix)
 
-        # Extract trial parameters from design matrix
-        trial_types = list(design_matrix["trial_type"])
-        trials = list(design_matrix["trial_option"])
-        bounces = list(design_matrix["bounce"])
-        rand_bounce_directions = list(design_matrix["phant_bounce_direction"])
-        ball_changes = list(design_matrix["ball_change"])
-        ball_color_changes = list(design_matrix["ball_luminance"])
+        n_trials = len(design_matrix) # actual number of trials, including task prompts
+        check_balance(design_matrix) # Remove eventually
         
         # Generate ball speeds and starting colors
         ball_speeds = bellshape_sample(float(config.ball.avg_speed), float(config.ball.natural_speed_variance), n_trials)
@@ -496,94 +693,122 @@ class BallHueSession(Session):
         # Generate inter-trial intervals, but now already done in the trial setup func, log there
         itis = truncated_exponential_decay(config.timing.min_iti, config.timing.max_iti, n_trials)
         
-        # Create trial parameters dictionary
-        trial_params = {
-            "design_matrix": design_matrix,
-            "trial_types": trial_types,
-            "trials": trials,
-            "bounces": bounces,
-            "rand_bounce_directions": rand_bounce_directions,
-            "ball_changes": ball_changes,
-            "ball_color_changes": ball_color_changes,
-            "ball_speeds": ball_speeds,
-            "ball_start_colors": ball_start_colors,
-            "itis": itis
-        }
+        design_matrix["ball_speeds"] = ball_speeds
+        design_matrix["ball_start_colors"] = ball_start_colors
+        design_matrix["itis"] = itis
+
+        # Save the rich design matrix to a TSV file
+        design_matrix.to_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t", index=False)
+        print(f"Design matrix saved to {self.output_dir} as TSV")
+
+        return design_matrix # used to be trial_params
         
-        return trial_params
-        
-    def create_trials(self, n_trials=None):
+    def create_trials(self, n_trials=None, run_no:int=None):
         """Create trials for the experiment"""
-        from functions.utilities import truncated_exponential_decay
+        from functions.utilities import truncated_exponential_decay, trial_subset
 
-        if n_trials is None:
-            n_trials = self.config.experiment.n_trials
-
-        itis = truncated_exponential_decay(min_iti=self.config.timing.min_iti,
-                                           truncation_cutoff=self.config.timing.max_iti,
-                                           size=n_trials)
+        instruction_trial = InstructionTrial(session=self,
+                                            # trial_nr=0,
+                                            trial_nr=None,
+                                            phase_durations=[np.inf],
+                                            # txt=self.settings['stimuli'].get('instruction_text'),
+                                            txt="Ball Hue Experiment Demo\n\nPress 'Space' to start",
+                                            keys=['space'], 
+                                            draw_each_frame=False)
         
+        # itis = truncated_exponential_decay(min_iti=self.config.timing.min_iti,
+        #                                    truncation_cutoff=self.config.timing.max_iti,
+        #                                    size=n_trials)
         # Create trials
-        self.trials = []
+        self.trials = [instruction_trial]
+        trial_counter = 1
+
         for trial_nr in range(n_trials):
-
-
+        # TUrn into run-based selection
+        # for trial_nr in range(start_trial, n_trials, )
             # Define phase durations
             phase_durations = [
                 self.config.timing.fixation_dur,      # Fixation phase
                 self.config.timing.interactor_dur,    # Interactor line display
                 self.config.timing.occluder_dur,      # Occluder display
-                self.config.timing.ballmov_dur,        # Ball movement
-                itis[trial_nr - 1]                      # Inter Trial Interval 
+                self.config.timing.ballmov_dur,       # Ball movement
+                # itis[trial_nr],                   # Inter Trial Interval (the 2 was a 1 first)
+                self.dmx["itis"][trial_nr],                   # Inter Trial Interval (the 2 was a 1 first)
+                # itis[trial_nr - 1],                   # Inter Trial Interval (the 2 was a 1 first)
             ]
+
+            phase_names = ["fixation", "interactor", "occluder", "ball_movement", "iti"]
+
+            # TODO: also add an extra, fixed (2s ?) ITI after prompt, to account for HRF decay
+            # TODO: zorg ervoor dat prompt stopt na 3s (of langer als dat nodig is), zodat 't consistent is (maar chekc met micha en floris hoe belangrijk)
+            if self.dmx["task_prompt"][trial_nr]:
+                # Insert task_prompt duration & name before ITI (for consistency and HRF decay)
+                phase_durations.extend([self.config.timing.task_prompt_dur, self.config.timing.post_prompt_iti])
+                phase_names.extend(["task_prompt", "post_prompt_iti"])
+
+            # if trial_nr % 22 == 0 and trial_nr > 0 and trial_nr % 88 != 0:
+            if trial_nr % self.config.timing.short_break_freq == 0 and trial_nr > 0 and trial_nr % self.config.timing.long_break_freq != 0:
+                # Add a break after every 22 trials
+                phase_durations.append(self.config.timing.short_break_dur)
+                phase_names.append("short break")
+            elif trial_nr % self.config.timing.long_break_freq == 0 and trial_nr > 0:
+                # Add a longer break after every 88 trials
+                phase_durations.append(self.config.timing.long_break_dur)
+                phase_names.append("long break")
 
             self.trials.append(
                 BallTrial(
                     session=self,
-                    trial_nr=trial_nr,
+                    trial_nr=(trial_nr),
+                    # trial_nr=(trial_nr + 1),  # Start from 1 for trials, 0 is instruction trial
                     phase_durations=phase_durations,
-                    trial_params=self.trial_params,
+                    phase_names=phase_names,
+                    trial_params=self.dmx,
                     verbose=True,
-                    timing='seconds'
+                    timing='seconds',
+                    draw_each_frame=True,  # setting to False makes nothing appear,
+                    txt=None,  
+                    keys=None,
                 )
             )
-            self.trials[trial_nr].prepare_trial()  # Prepare each trial # NOT SURE IF RIGHT PLACE
+
+            self.trials[trial_nr + 1].prepare_trial()  # Prep trial params
+
+            # Increment trial counter (not used for anything as of now )
+            trial_counter += 1
 
     def run(self):
         """Run the experiment"""
         # Start experiment
         self.start_experiment()
-        
-        # Display instructions (simplified)
-        instructions = visual.TextStim(
-            self.win,
-            text="Ball Hue Experiment Demo\n\nPress 'Space' to start",
-            color="white",
-            pos=(0, 0),
-            height=30
-        )
-        
-        instructions.draw()
-        self.win.flip()
-        event.waitKeys(keyList=["space"])
-        
+
         # Run all trials
-        for trial_idx, trial in enumerate(self.trials):
-            # Check for quit
-            keys = event.getKeys(keyList=["escape", "q"])
-            if "escape" in keys or "q" in keys:
-                break
-            
-            print(f"Trial: {trial.trial}")
+        for _, trial in enumerate(self.trials):
+            print(f"Trial: {trial.trial_nr, trial.trial}")
             trial.run()
         
         # Close experiment
         self.close()
 
+
+
+
 if __name__ == "__main__":
-    settings = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
+    parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')
+    parser.add_argument('--subject', type=str, required=True, help='Subject identifier')
+    parser.add_argument('--run', type=int, default=1, help='Run number for the experiment (default: 1)')
+
+    args = parser.parse_args()
+
+    runs_per_session = 4
+    total_trials = 320
+
+    config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
 
     # Create and run the session
-    session = BallHueSession(output_str="sub-tosti", config_file=settings, settings_file=settings)
-    session.create_trials(n_trials=session.config.experiment.n_trials)  # Reduce number of trials for testing
+    # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
+    session = BallHueSession(output_str=args.subject, config_file=config_path, run_no=args.run)
+    
+    session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
+
     session.run()
