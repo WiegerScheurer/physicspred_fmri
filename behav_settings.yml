@@ -169,9 +169,9 @@ various:
 experiment:
   name: "physicspred"
   psychopy_version: "2024.2.4"
-  # n_trials: 320
+  n_trials: 320
   # n_trials: 32
-  n_trials: 12
+  # n_trials: 80 # NOTE: the target trials are asdded automatically, so this is the number of needed fMRI trials
   n_trials_spatloc: 12
   feedback_freq: 5          # Trials between feedback moments
   target_baserate: 0.5      # Frequency of target trials (1:1 ratio)

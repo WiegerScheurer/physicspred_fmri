@@ -492,11 +492,21 @@ class BallTrial(Trial):
         self.session.fixation_horizontal.draw()
         self.session.fixation_vertical.draw()
 
-class BallHueSession(Session):
+# class BallHueSession(Session):
+class BallHueSession(PylinkEyetrackerSession):
     """Session for the Ball Hue experiment"""
     
-    def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None, run_no:int=None):
-        super().__init__(output_str, output_dir=output_dir, settings_file=config_file) # THIS WAS THE BUG, settings file still was settingfil
+    def __init__(self, 
+                 output_str, 
+                 config_file="behav_settings.yml", 
+                 output_dir=None, 
+                #  settings_file=None, 
+                 run_no:int=None, 
+                 eyetracker_on:bool=False):
+        super().__init__(output_str, 
+                         output_dir=output_dir, 
+                         settings_file=config_file, # THIS WAS THE BUG, settings file still was settingfil
+                         eyetracker_on=eyetracker_on) 
 
         
         # Load configuration file
@@ -711,9 +721,10 @@ class BallHueSession(Session):
                                                 # trial_nr=0,
                                                 trial_nr=None,
                                                 phase_durations=[np.inf],
-                                                # txt=self.settings['stimuli'].get('instruction_text'),
-                                                txt="Ball Hue Experiment Demo\n\nPress 'Space' to start",
-                                                keys=['space'], 
+                                                # txt="Ball Hue Experiment Demo\n\nPress 'Space' to start",
+                                                txt="Ball Hue Experiment Demo\n\nWaiting for scanner pulse",
+                                                # keys=['space'], 
+                                                keys=self.config['mri'].get('sync', 't'), # CHECK IF THIS IS ENOUGH, see simple_exp session class instance
                                                 draw_each_frame=False)
 
             # Create trials
@@ -747,11 +758,11 @@ class BallHueSession(Session):
                 phase_names.extend(["task_prompt", "post_prompt_iti"])
 
             # if trial_nr % 22 == 0 and trial_nr > 0 and trial_nr % 88 != 0:
-            if trial_nr % self.config.timing.short_break_freq == 0 and trial_nr > 0 and trial_nr % self.config.timing.long_break_freq != 0:
+            if (trial_nr + 1) % self.config.timing.short_break_freq == 0 and trial_nr > 0 and (trial_nr + 1) % self.config.timing.long_break_freq != 0:
                 # Add a break after every 22 trials
                 phase_durations.append(self.config.timing.short_break_dur)
                 phase_names.append("short break")
-            elif trial_nr % self.config.timing.long_break_freq == 0 and trial_nr > 0:
+            elif (trial_nr + 1) % self.config.timing.long_break_freq == 0 and trial_nr > 0:
                 # Add a longer break after every 88 trials
                 phase_durations.append(self.config.timing.long_break_dur)
                 phase_names.append("long break")
@@ -778,10 +789,20 @@ class BallHueSession(Session):
             # Increment trial counter (not used for anything as of now )
             trial_counter += 1
         
-    def run(self):
-        """Run the experiment"""
+    def run(self, run_no:int=None):
+        """Run the bouncing ball fmri experiment"""
+
+        if run_no == 1:
+            if self.eyetracker_on:
+                print("Starting eyetracker calibration...")
+                self.calibrate_eyetracker() 
+
         # Start experiment
         self.start_experiment()
+
+        if self.eyetracker_on:
+            print("Starting eyetracker recording...")
+            self.start_eyetracker_recording()
 
         # Run all trials
         for _, trial in enumerate(self.trials):
@@ -795,6 +816,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')
     parser.add_argument('--subject', type=str, required=True, help='Subject identifier')
     parser.add_argument('--run', type=int, default=1, help='Run number for the experiment (default: 1)')
+    parser.add_argument('--eyetracker', action='store_true', help='Enable eyetracker recording (default: False)')
 
     args = parser.parse_args()
 
@@ -805,10 +827,10 @@ if __name__ == "__main__":
 
     # Create and run the session
     # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
-    session = BallHueSession(output_str=f"{args.subject}_{args.run}", config_file=config_path, run_no=args.run)
+    session = BallHueSession(output_str=f"{args.subject}_{args.run}", config_file=config_path, run_no=args.run, eyetracker_on=args.eyetracker)
     
     # session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
     # session.create_trials(n_trials=((len(session.dmx["trial_option"]) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
     session.create_trials(n_trials=((len(session.dmx) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
 
-    session.run()
+    session.run(run_no=args.run)
