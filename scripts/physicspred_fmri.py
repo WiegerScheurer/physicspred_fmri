@@ -1,4 +1,3 @@
-########BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP BACK UP
 # TODO: Create a catch trial prompt that occurs after 64 trials, of which 32 contain a ball brightness change
 # , These do not necessarily have to be balanced per block, but rather over the entire experiment. Find a simple way
 # For them to respond, this will be done with an fMRI button box, so likely similar to how I do it with the buttonbox
@@ -18,6 +17,11 @@
 # most of it is implemented in the core .py files from the exptools2 wrapper, but I need to make sure I initialise it correctly. 
 # Important to schedule some lab bookings, so that I can test all of that. Could then also test the example script. 
 
+
+### TODO: There is a problem with the window or something, no clue what happened, but it might not occur yet in the backup
+# i made which is the physsicspred_fmri.py file, check that. The main problem is that the text windows do not show up?
+# I presume it has something to do with a potential overridance of the window or someting, figure that out. 
+# THen, check whether the button response assignment works. THEN implement eyetracker and fMRI syncs, then test.
 
 
 #%%
@@ -87,6 +91,8 @@ from functions.physics import (
 #         )
 #         self.stop_trial()
 
+
+### Current one
 class InstructionTrial(Trial):
     """ Simple trial with instruction text. """
 
@@ -98,15 +104,19 @@ class InstructionTrial(Trial):
         self.trial = "instruction"
         self.phase_names = ["instruction"]
 
-        txt_height = self.session.settings['various'].get('text_height')
-        txt_width = self.session.settings['various'].get('text_width')
-        text_position_x = self.session.settings['various'].get('text_position_x')
-        text_position_y = self.session.settings['various'].get('text_position_y')
+        txt_height = session.config['various'].get('text_height')
+        txt_width = session.config['various'].get('text_width')
+        text_position_x = session.config['various'].get('text_position_x')
+        text_position_y = session.config['various'].get('text_position_y')
+        # txt_height = self.session.settings['various'].get('text_height')
+        # txt_width = self.session.settings['various'].get('text_width')
+        # text_position_x = self.session.settings['various'].get('text_position_x')
+        # text_position_y = self.session.settings['various'].get('text_position_y')
 
         if txt is None:
             txt = '''Press any button to commence.'''
 
-        self.text = TextStim(self.session.win, txt,
+        self.text = TextStim(session.win, txt,
                              height=txt_height, 
                              wrapWidth=txt_width, 
                              pos=[text_position_x, text_position_y],
@@ -133,8 +143,6 @@ class InstructionTrial(Trial):
                 if key in self.keys:
                     self.stop_phase()
 
-
-
 class BallTrial(Trial):
     """Trial for ball movement and hue change paradigm"""
     
@@ -147,7 +155,6 @@ class BallTrial(Trial):
         # Store trial parameters
         self.config = session.config
         # self.win = session.win
-
         # Extract trial-specific parameters
         self.trial_idx = self.trial_nr % len(session.dmx['trial_option']) # What does this do
         # if self.trial_idx > 0:
@@ -164,16 +171,22 @@ class BallTrial(Trial):
         self.changed_ball_color = oklab_to_rgb([(self.ball_start_color + self.ball_color_change), 0, 0], psychopy_rgb=True)
         
         # Preparatory work for task prompt versions
-        txt_height = self.session.settings['various'].get('text_height')
-        txt_width = self.session.settings['various'].get('text_width')
-        text_position_x = self.session.settings['various'].get('text_position_x')
-        text_position_y = self.session.settings['various'].get('text_position_y')
+        txt_height = self.config['various'].get('text_height')
+        txt_width = self.config['various'].get('text_width')
+        text_position_x = self.config['various'].get('text_position_x')
+        text_position_y = self.config['various'].get('text_position_y')
 
         if txt is None:
             txt = '''Press any button to continue.'''
 
-        txt = f"Did the ball change brightness?\nPress {self.session.button_map['no']} for NO or {self.session.button_map['yes']} for YES"
-        self.keys = [self.session.button_map["no"], self.session.button_map["yes"]] 
+        buttons = ["left", "right"]
+        change_detect_button = session.dmx["change_detect_button"][self.trial_idx]
+        button_map = {"yes": change_detect_button,
+                      "no": buttons[0] if change_detect_button == buttons[1] else buttons[1]}  # Ensure 'no' is the opposite button
+
+        txt = f"Did the ball change brightness?\nPress {button_map['no']} for NO or {button_map['yes']} for YES"
+        # txt = f"Did the ball change brightness?\nPress {self.session.button_map['no']} for NO or {self.session.button_map['yes']} for YES"
+        self.keys = [button_map["no"], button_map["yes"]] 
         # self.response_given = False # This is to check if the response has been given, so that we can stop the phase
 
         self.text = TextStim(session.win, txt,
@@ -480,8 +493,9 @@ class BallTrial(Trial):
 class BallHueSession(Session):
     """Session for the Ball Hue experiment"""
     
-    def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None):
-        super().__init__(output_str, output_dir=output_dir, settings_file=settings_file)
+    def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None, run_no:int=None):
+        super().__init__(output_str, output_dir=output_dir, settings_file=config_file) # THIS WAS THE BUG, settings file still was settingfil
+
         
         # Load configuration file
         config_path = os.path.join(os.path.dirname(__file__), os.pardir, config_file)
@@ -490,16 +504,14 @@ class BallHueSession(Session):
         # Setup visual elements
         self.setup_visual_elements()
         
-        # Generate experiment design
-        self.dmx = self.create_design()
-        
-        # Determine which button does what # Check if works
-        button_options = ["left", "right"]
-        button_order = random.sample(button_options, len(button_options))
-        self.button_map = {
-            "no": button_order[0], # Session because it's an input and the super class is not yet initialized
-            "yes": button_order[1],
-        }
+        if run_no == 1:
+            # Generate experiment design
+            self.dmx = self.create_design()
+
+        else: 
+            self.dmx = pd.read_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t")
+
+        self.win.color = self.config.window.color  # Set window background color
 
         # Hide mouse cursor
         self.win.mouseVisible = False
@@ -531,7 +543,7 @@ class BallHueSession(Session):
     def setup_visual_elements(self):
         """Set up all visual elements needed for the experiment"""
         config = self.config
-        
+
         # Create ball
         self.ball = visual.Circle(
             win=self.win,
@@ -697,6 +709,20 @@ class BallHueSession(Session):
         design_matrix["ball_start_colors"] = ball_start_colors
         design_matrix["itis"] = itis
 
+        # Determine which button does what # Check if works
+        button_options = ["left", "right"]
+        button_order = random.sample(button_options, len(button_options))
+
+        # self.global_log.loc[0] = button_order # see if this works
+
+        # self.button_map = {
+        #     "yes": button_order[1],
+        #     "no": button_order[0], # Session because it's an input and the super class is not yet initialized
+        # }
+
+        design_matrix["change_detect_button"] = [button_order[0]] * (len(design_matrix) // 2) + [button_order[1]] * (len(design_matrix) // 2)
+        # design_matrix["change_detect_button"] = [config.button_map["no"], config.button_map["yes"]] * (n_trials // 2)  # Alternate button order
+
         # Save the rich design matrix to a TSV file
         design_matrix.to_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t", index=False)
         print(f"Design matrix saved to {self.output_dir} as TSV")
@@ -715,10 +741,7 @@ class BallHueSession(Session):
                                             txt="Ball Hue Experiment Demo\n\nPress 'Space' to start",
                                             keys=['space'], 
                                             draw_each_frame=False)
-        
-        # itis = truncated_exponential_decay(min_iti=self.config.timing.min_iti,
-        #                                    truncation_cutoff=self.config.timing.max_iti,
-        #                                    size=n_trials)
+
         # Create trials
         self.trials = [instruction_trial]
         trial_counter = 1
@@ -787,11 +810,8 @@ class BallHueSession(Session):
             print(f"Trial: {trial.trial_nr, trial.trial}")
             trial.run()
         
-        # Close experiment
+        # Close experimentrun
         self.close()
-
-
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')

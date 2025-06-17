@@ -91,6 +91,8 @@ from functions.physics import (
 #         )
 #         self.stop_trial()
 
+
+### Current one
 class InstructionTrial(Trial):
     """ Simple trial with instruction text. """
 
@@ -102,10 +104,10 @@ class InstructionTrial(Trial):
         self.trial = "instruction"
         self.phase_names = ["instruction"]
 
-        txt_height = self.session.config['various'].get('text_height')
-        txt_width = self.session.config['various'].get('text_width')
-        text_position_x = self.session.config['various'].get('text_position_x')
-        text_position_y = self.session.config['various'].get('text_position_y')
+        txt_height = session.config['various'].get('text_height')
+        txt_width = session.config['various'].get('text_width')
+        text_position_x = session.config['various'].get('text_position_x')
+        text_position_y = session.config['various'].get('text_position_y')
         # txt_height = self.session.settings['various'].get('text_height')
         # txt_width = self.session.settings['various'].get('text_width')
         # text_position_x = self.session.settings['various'].get('text_position_x')
@@ -114,7 +116,7 @@ class InstructionTrial(Trial):
         if txt is None:
             txt = '''Press any button to commence.'''
 
-        self.text = TextStim(self.session.win, txt,
+        self.text = TextStim(session.win, txt,
                              height=txt_height, 
                              wrapWidth=txt_width, 
                              pos=[text_position_x, text_position_y],
@@ -141,8 +143,6 @@ class InstructionTrial(Trial):
                 if key in self.keys:
                     self.stop_phase()
 
-
-
 class BallTrial(Trial):
     """Trial for ball movement and hue change paradigm"""
     
@@ -157,6 +157,8 @@ class BallTrial(Trial):
         # self.win = session.win
         # Extract trial-specific parameters
         self.trial_idx = self.trial_nr % len(session.dmx['trial_option']) # What does this do
+
+        
         # if self.trial_idx > 0:
 
         self.trial = session.dmx['trial_option'][self.trial_idx]
@@ -171,15 +173,10 @@ class BallTrial(Trial):
         self.changed_ball_color = oklab_to_rgb([(self.ball_start_color + self.ball_color_change), 0, 0], psychopy_rgb=True)
         
         # Preparatory work for task prompt versions
-        txt_height = self.session.config['various'].get('text_height')
-        txt_width = self.session.config['various'].get('text_width')
-        text_position_x = self.session.config['various'].get('text_position_x')
-        text_position_y = self.session.config['various'].get('text_position_y')
-        # # Preparatory work for task prompt versions
-        # txt_height = self.session.settings['various'].get('text_height')
-        # txt_width = self.session.settings['various'].get('text_width')
-        # text_position_x = self.session.settings['various'].get('text_position_x')
-        # text_position_y = self.session.settings['various'].get('text_position_y')
+        txt_height = self.config['various'].get('text_height')
+        txt_width = self.config['various'].get('text_width')
+        text_position_x = self.config['various'].get('text_position_x')
+        text_position_y = self.config['various'].get('text_position_y')
 
         if txt is None:
             txt = '''Press any button to continue.'''
@@ -353,8 +350,8 @@ class BallTrial(Trial):
             # self.session.display_text(text=f"Time for a break, chill it up in here!\n\nTask continues in {time_to_break:.2f} seconds",
             self.session.display_text(text=f"Time for a break, chill it up in here!\n\nTask continues in {int(time_to_break)} seconds",
                                     # keys=["space"],
-                                    duration=self.phase_durations[7],
-                                    # duration=1,
+                                    # duration=self.phase_durations[7],
+                                    duration=1, # So that it refresehs every second
                                     # duration=10,  # for testing
                                     height=40,
                                     color="blue",
@@ -499,7 +496,8 @@ class BallHueSession(Session):
     """Session for the Ball Hue experiment"""
     
     def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None, run_no:int=None):
-        super().__init__(output_str, output_dir=output_dir, settings_file=settings_file)
+        super().__init__(output_str, output_dir=output_dir, settings_file=config_file) # THIS WAS THE BUG, settings file still was settingfil
+
         
         # Load configuration file
         config_path = os.path.join(os.path.dirname(__file__), os.pardir, config_file)
@@ -509,51 +507,18 @@ class BallHueSession(Session):
         self.setup_visual_elements()
         
         if run_no == 1:
-            # Generate experiment design
+            # Generate experiment design, only if it's the first run 
             self.dmx = self.create_design()
 
-            # # Determine which button does what # Check if works
-            # button_options = ["left", "right"]
-            # button_order = random.sample(button_options, len(button_options))
-
-            # self.global_log.loc[0] = button_order # see if this works
-
-            # self.button_map = {
-            #     "no": button_order[0], # Session because it's an input and the super class is not yet initialized
-            #     "yes": button_order[1],
-            # }
-
         else: 
-            self.dmx = pd.read_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t")
+            print(f"Loading design matrix for run {run_no} from file...")
+            run_cap = 1 if run_no < 10 else 2  # Adjust for single or double digit run numbers
+            self.dmx = pd.read_csv(op.join(self.output_dir, f"{self.output_str[:-run_cap]}1_design_matrix.tsv"), sep="\t")
 
-        self.win.color = self.config.window.color  # Set window background color
+        # self.win.color = self.config.window.color  # Set window background color # Maybe not needed? EDITED: commented out
 
         # Hide mouse cursor
         self.win.mouseVisible = False
-    
-    # def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None):
-    #     super().__init__(output_str, output_dir=output_dir, settings_file=settings_file)
-        
-    #     # Load configuration file
-    #     config_path = os.path.join(os.path.dirname(__file__), os.pardir, config_file)
-    #     self.config = OmegaConf.load(config_path)
-        
-    #     # Setup visual elements
-    #     self.setup_visual_elements()
-        
-    #     # Generate experiment design
-    #     self.dmx = self.create_design()
-        
-    #     # Determine which button does what # Check if works
-    #     button_options = ["left", "right"]
-    #     button_order = random.sample(button_options, len(button_options))
-    #     self.button_map = {
-    #         "no": button_order[0], # Session because it's an input and the super class is not yet initialized
-    #         "yes": button_order[1],
-    #     }
-
-    #     # Hide mouse cursor
-    #     self.win.mouseVisible = False
     
     def setup_visual_elements(self):
         """Set up all visual elements needed for the experiment"""
@@ -728,15 +693,7 @@ class BallHueSession(Session):
         button_options = ["left", "right"]
         button_order = random.sample(button_options, len(button_options))
 
-        # self.global_log.loc[0] = button_order # see if this works
-
-        # self.button_map = {
-        #     "yes": button_order[1],
-        #     "no": button_order[0], # Session because it's an input and the super class is not yet initialized
-        # }
-
         design_matrix["change_detect_button"] = [button_order[0]] * (len(design_matrix) // 2) + [button_order[1]] * (len(design_matrix) // 2)
-        # design_matrix["change_detect_button"] = [config.button_map["no"], config.button_map["yes"]] * (n_trials // 2)  # Alternate button order
 
         # Save the rich design matrix to a TSV file
         design_matrix.to_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t", index=False)
@@ -748,25 +705,27 @@ class BallHueSession(Session):
         """Create trials for the experiment"""
         from functions.utilities import truncated_exponential_decay, trial_subset
 
-        instruction_trial = InstructionTrial(session=self,
-                                            # trial_nr=0,
-                                            trial_nr=None,
-                                            phase_durations=[np.inf],
-                                            # txt=self.settings['stimuli'].get('instruction_text'),
-                                            txt="Ball Hue Experiment Demo\n\nPress 'Space' to start",
-                                            keys=['space'], 
-                                            draw_each_frame=False)
-        
-        # itis = truncated_exponential_decay(min_iti=self.config.timing.min_iti,
-        #                                    truncation_cutoff=self.config.timing.max_iti,
-        #                                    size=n_trials)
-        # Create trials
-        self.trials = [instruction_trial]
-        trial_counter = 1
+        if run_no == 1:
 
-        for trial_nr in range(n_trials):
-        # TUrn into run-based selection
-        # for trial_nr in range(start_trial, n_trials, )
+            instruction_trial = InstructionTrial(session=self,
+                                                # trial_nr=0,
+                                                trial_nr=None,
+                                                phase_durations=[np.inf],
+                                                # txt=self.settings['stimuli'].get('instruction_text'),
+                                                txt="Ball Hue Experiment Demo\n\nPress 'Space' to start",
+                                                keys=['space'], 
+                                                draw_each_frame=False)
+
+            # Create trials
+            self.trials = [instruction_trial]
+            trial_counter = 1
+        else:
+            # Load trials from design matrix
+            self.trials = []
+            trial_counter = 0
+
+        for trial_nr_raw in range(n_trials): # 
+            trial_nr = (trial_nr_raw + (n_trials * (run_no - 1))) # Adjust for run number, so it continues where it left off
             # Define phase durations
             phase_durations = [
                 self.config.timing.fixation_dur,      # Fixation phase
@@ -813,11 +772,12 @@ class BallHueSession(Session):
                 )
             )
 
-            self.trials[trial_nr + 1].prepare_trial()  # Prep trial params
+            trial_no_shift = 1 if run_no == 1 else 0  # Adjust trial number shift based on run number
+            self.trials[trial_nr_raw + trial_no_shift].prepare_trial()  # Prep trial params # RAW because otherwise it's too high in later runs
 
             # Increment trial counter (not used for anything as of now )
             trial_counter += 1
-
+        
     def run(self):
         """Run the experiment"""
         # Start experiment
@@ -828,11 +788,8 @@ class BallHueSession(Session):
             print(f"Trial: {trial.trial_nr, trial.trial}")
             trial.run()
         
-        # Close experiment
+        # Close experimentrun
         self.close()
-
-
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')
@@ -848,8 +805,10 @@ if __name__ == "__main__":
 
     # Create and run the session
     # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
-    session = BallHueSession(output_str=args.subject, config_file=config_path, run_no=args.run)
+    session = BallHueSession(output_str=f"{args.subject}_{args.run}", config_file=config_path, run_no=args.run)
     
-    session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
+    # session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
+    # session.create_trials(n_trials=((len(session.dmx["trial_option"]) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
+    session.create_trials(n_trials=((len(session.dmx) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
 
     session.run()

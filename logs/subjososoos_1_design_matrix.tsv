@@ -1,0 +1,33 @@
+trial_type	trial_option	bounce	phant_bounce_direction	ball_change	ball_luminance	task_prompt	ball_speeds	ball_start_colors	itis	change_detect_button
+empty	none_r	False		False		False	8.31930572197	0.839321825802	1.38845452365	right
+empty	none_l	True	left	True	0.06	False	8.4138975946	0.925508547318	3.35033480972	right
+interactor	135_bottom_r	False		False		True	8.34299188969	0.850686174858	1.07205253048	right
+empty	none_l	False		False		True	8.33531874867	0.809379161883	1.47973670259	right
+interactor	45_bottom_d	False		True	0.06	True	8.23145709925	0.821030911236	1.31957898599	right
+interactor	135_bottom_r	True		False		False	8.51347648609	0.763446254504	1.60000734673	right
+interactor	135_bottom_d	False		False		True	8.50090655661	0.907095099609	1.96219404491	right
+interactor	45_bottom_l	True		False		False	8.37237238727	0.890990510304	3.49171907917	right
+empty	none_r	True	left	True	0.06	True	8.52380824249	0.823996185281	1.05139479635	right
+empty	none_d	False		False		True	8.7144710206	0.881774116968	1.63902793842	right
+interactor	45_bottom_d	True		True	0.06	False	8.54711567987	0.897871564214	2.52769392528	right
+interactor	135_top_u	False		False		True	8.71146306496	0.828719188915	1.18920080665	right
+empty	none_u	False		True	0.06	False	8.84162894693	0.915783336032	2.61285046505	right
+interactor	135_top_l	True		False		False	8.71613761042	0.890051829092	2.25805192668	right
+interactor	135_top_u	True		False		False	8.64014163857	0.82230590697	3.01854203677	right
+empty	none_l	False		True	0.06	False	8.46098841254	0.900055466433	1.34371266226	right
+empty	none_u	False		False		False	8.51526887221	0.932941277264	1.99484266388	left
+empty	none_d	False		True	0.06	True	8.68202027777	0.803058248252	1.50537368898	left
+interactor	45_top_u	False		False		True	8.63262832936	0.866738233145	1.45201043757	left
+interactor	45_top_r	True		False		True	8.41880745117	0.960969152841	1.93143921602	left
+interactor	135_bottom_d	True		True	0.06	False	8.3071181992	0.881216451258	1.96929076429	left
+empty	none_u	False		True	0.06	True	8.34562138945	0.834487379798	1.10236654717	left
+interactor	45_bottom_l	False		True	0.06	True	8.33184774712	0.821245570105	1.91398205197	left
+interactor	45_top_u	True		True	0.06	False	8.33259684517	0.85839659052	1.29782334718	left
+empty	none_r	False		True	0.06	True	8.80689563795	0.845305253214	1.21694279205	left
+empty	none_d	False		False		False	8.36338871665	0.882825050271	1.00151475623	left
+interactor	45_top_r	True		False		False	8.63248298026	0.844608451769	2.00535733145	left
+empty	none_d	True	left	False		False	8.30737537925	0.792044638443	1.18750211196	left
+empty	none_u	True	right	True	0.06	True	8.39226689473	0.802572961896	1.3203248288	left
+empty	none_l	False		True	0.06	True	8.36398545348	0.850694613634	1.09374476958	left
+interactor	135_top_l	True		False		True	8.34232779556	0.87797132192	1.40860366704	left
+empty	none_r	False		False		False	8.44040522893	0.861017337345	1.16446186872	left
