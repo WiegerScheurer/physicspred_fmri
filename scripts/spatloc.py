@@ -11,11 +11,14 @@ from exptools2.core import Session, Trial
 from exptools2.core import PylinkEyetrackerSession
 import pandas as pd
 import os.path as op
-'/Users/wieger.scheurer/exp_venv/lib/python3.10/site-packages/exptools2/experiments/physicspred'
+# '/Users/wieger.scheurer/exp_venv/lib/python3.10/site-packages/exptools2/experiments/physicspred'
 
 # sys.path.append("/Users/wiegerscheurer/repos/physicspred")
-sys.path.insert(0, '/Users/wieger.scheurer/miniconda3/envs/exp/lib/python3.10/site-packages/exptools2')
-sys.path.insert(0, '/Users/wieger.scheurer/miniconda3/envs/exp/lib/python3.10/site-packages/exptools2/experiments/physicspred')
+# sys.path.insert(0, '/Users/wieger.scheurer/miniconda3/envs/exp/lib/python3.10/site-packages/exptools2')
+# sys.path.insert(0, '/Users/wieger.scheurer/miniconda3/envs/exp/lib/python3.10/site-packages/exptools2/experiments/physicspred')
+
+sys.path.append("/Users/wieger.scheurer/exp_venv/lib/python3.10/site-packages/exptools2")
+sys.path.append("/Users/wieger.scheurer/exp_venv/lib/python3.10/site-packages/exptools2/experiments/physicspred/")
 
 # sys.path.append("D:/Users/wiesch/physicspred_cub6")
 
@@ -733,6 +736,8 @@ class BallHueSession(Session):
             verbose=verbose,
             neg_bias_factor=config.ball.neg_bias_factor,
             neg_bias_shift=config.ball.neg_bias_shift,
+            fmri_task=False,
+            prompt_every=1000000,  # Disable prompts for now
         )
         
         check_balance(design_matrix)

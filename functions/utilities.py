@@ -188,7 +188,7 @@ def create_balanced_trial_design(trial_n=None, change_ratio:list = [True, False]
     # Strangely enough it appears that darker balls should be less extreme than brighter balls. 
     
     if fmri_task is False:
-        ball_color_change_options = list(ordinal_sample(ball_color_change_mean, ball_color_change_sd, n_elements=5, round_decimals=3,
+        ball_color_change_options = list(ordinal_sample(float(ball_color_change_mean), ball_color_change_sd, n_elements=5, round_decimals=3,
                                         pos_bias_factor=1.0, neg_bias_factor=neg_bias_factor, neg_bias_shift=neg_bias_shift))
     else:
         ball_color_change_options = [ball_color_change_sd]
