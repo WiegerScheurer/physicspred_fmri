@@ -812,13 +812,42 @@ class BallHueSession(PylinkEyetrackerSession):
         # Close experimentrun
         self.close()
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')
-    parser.add_argument('--subject', type=str, required=True, help='Subject identifier')
-    parser.add_argument('--run', type=int, default=1, help='Run number for the experiment (default: 1)')
-    parser.add_argument('--eyetracker', action='store_true', help='Enable eyetracker recording (default: False)')
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')
+#     parser.add_argument('--subject', type=str, required=True, help='Subject identifier')
+#     parser.add_argument('--run', type=int, default=1, help='Run number for the experiment (default: 1)')
+#     parser.add_argument('--eyetracker', action='store_true', help='Enable eyetracker recording (default: False)')
 
-    args = parser.parse_args()
+#     args = parser.parse_args()
+
+#     runs_per_session = 4
+#     total_trials = 320
+
+#     config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
+
+#     # Create and run the session
+#     # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
+#     session = BallHueSession(output_str=f"{args.subject}_{args.run}", config_file=config_path, run_no=args.run, eyetracker_on=args.eyetracker)
+    
+#     # session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
+#     # session.create_trials(n_trials=((len(session.dmx["trial_option"]) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
+#     session.create_trials(n_trials=((len(session.dmx) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
+
+#     session.run(run_no=args.run)
+
+from psychopy import gui
+
+if __name__ == "__main__":
+    # Define the fields you want to prompt for
+    info = {
+        'Subject': 'sub-01',
+        'Run': 1,
+        'Eyetracker': True
+    }
+    dlg = gui.DlgFromDict(info, title='Experiment Info')
+    if not dlg.OK:
+        print("The experiment was quit.")
+        exit()
 
     runs_per_session = 4
     total_trials = 320
@@ -826,11 +855,16 @@ if __name__ == "__main__":
     config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
 
     # Create and run the session
-    # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
-    session = BallHueSession(output_str=f"{args.subject}_{args.run}", config_file=config_path, run_no=args.run, eyetracker_on=args.eyetracker)
-    
-    # session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
-    # session.create_trials(n_trials=((len(session.dmx["trial_option"]) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
-    session.create_trials(n_trials=((len(session.dmx) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
+    session = BallHueSession(
+        output_str=f"{info['Subject']}_{info['Run']}",
+        config_file=config_path,
+        run_no=int(info['Run']),
+        eyetracker_on=bool(info['Eyetracker'])
+    )
 
-    session.run(run_no=args.run)
+    session.create_trials(
+        n_trials=(len(session.dmx) // runs_per_session),
+        run_no=int(info['Run'])
+    )
+
+    session.run(run_no=int(info['Run']))
