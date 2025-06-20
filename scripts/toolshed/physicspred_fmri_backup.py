@@ -11,17 +11,11 @@
 # Yes I like 4, because then the first one will already be somewhat informative, and the frequency is nice. This means there'll be 16 in total, and they 
 # will be 5s long as well, so that means 80 seconds of feedback. Also implement reaction time into this. 
 
-# TODO: MAIL JOSE ONCE TIMING IS SOMEWHAT CLEAR. I believe I need to have a predefined number of volumes to scan (depends on TRs)
 
 # TODO part 2: figure out to what extent the fMRI implementation is already functional. The example script seems very simple, I think
 # most of it is implemented in the core .py files from the exptools2 wrapper, but I need to make sure I initialise it correctly. 
 # Important to schedule some lab bookings, so that I can test all of that. Could then also test the example script. 
 
-
-### TODO: There is a problem with the window or something, no clue what happened, but it might not occur yet in the backup
-# i made which is the physsicspred_fmri.py file, check that. The main problem is that the text windows do not show up?
-# I presume it has something to do with a potential overridance of the window or someting, figure that out. 
-# THen, check whether the button response assignment works. THEN implement eyetracker and fMRI syncs, then test.
 
 
 #%%
@@ -31,6 +25,7 @@ import numpy as np
 import random
 from psychopy import visual, core, event
 from omegaconf import OmegaConf
+from psychopy import gui
 import exptools2
 from exptools2.core import Session, Trial
 from exptools2.core import PylinkEyetrackerSession
@@ -498,7 +493,7 @@ class BallHueSession(PylinkEyetrackerSession):
     
     def __init__(self, 
                  output_str, 
-                 config_file="behav_settings.yml", 
+                 config_file="fmri_settings.yml", 
                  output_dir=None, 
                 #  settings_file=None, 
                  run_no:int=None, 
@@ -823,7 +818,7 @@ class BallHueSession(PylinkEyetrackerSession):
 #     runs_per_session = 4
 #     total_trials = 320
 
-#     config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
+#     config_path = os.path.join(os.path.dirname(__file__), os.pardir, "fmri_settings.yml")
 
 #     # Create and run the session
 #     # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
@@ -835,7 +830,7 @@ class BallHueSession(PylinkEyetrackerSession):
 
 #     session.run(run_no=args.run)
 
-from psychopy import gui
+
 
 if __name__ == "__main__":
     # Define the fields you want to prompt for
@@ -852,7 +847,7 @@ if __name__ == "__main__":
     runs_per_session = 4
     total_trials = 320
 
-    config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
+    config_path = os.path.join(os.path.dirname(__file__), os.pardir, "fmri_settings.yml")
 
     # Create and run the session
     session = BallHueSession(

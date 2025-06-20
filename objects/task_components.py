@@ -10,8 +10,11 @@ from omegaconf import OmegaConf
 
 
 sys.path.append(
-    "/Users/wiegerscheurer/repos/physicspred"
+    "/Users/wieger.scheurer/repoclones/physicspred"
 )  # To enable importing from repository folders
+# sys.path.append(
+#     "/Users/wiegerscheurer/repos/physicspred"
+# )  # To enable importing from repository folders
 
 from functions.physics import get_bounce_dist
 from functions.utilities import oklab_to_rgb
@@ -21,7 +24,8 @@ mac_or_lab = "lab" # mac or lab
 
 # Load configuration from YAML file
 # config_path = os.path.join(os.path.dirname(__file__), os.pardir, "config_lumin.yaml")
-config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
+config_path = os.path.join(os.path.dirname(__file__), os.pardir, "fmri_settings.yml")
+# config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
 config = OmegaConf.load(config_path)
 
 # occluder_type = config.occluder.type

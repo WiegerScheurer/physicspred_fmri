@@ -11,17 +11,11 @@
 # Yes I like 4, because then the first one will already be somewhat informative, and the frequency is nice. This means there'll be 16 in total, and they 
 # will be 5s long as well, so that means 80 seconds of feedback. Also implement reaction time into this. 
 
-# TODO: MAIL JOSE ONCE TIMING IS SOMEWHAT CLEAR. I believe I need to have a predefined number of volumes to scan (depends on TRs)
 
 # TODO part 2: figure out to what extent the fMRI implementation is already functional. The example script seems very simple, I think
 # most of it is implemented in the core .py files from the exptools2 wrapper, but I need to make sure I initialise it correctly. 
 # Important to schedule some lab bookings, so that I can test all of that. Could then also test the example script. 
 
-
-### TODO: There is a problem with the window or something, no clue what happened, but it might not occur yet in the backup
-# i made which is the physsicspred_fmri.py file, check that. The main problem is that the text windows do not show up?
-# I presume it has something to do with a potential overridance of the window or someting, figure that out. 
-# THen, check whether the button response assignment works. THEN implement eyetracker and fMRI syncs, then test.
 
 
 #%%
@@ -31,6 +25,7 @@ import numpy as np
 import random
 from psychopy import visual, core, event
 from omegaconf import OmegaConf
+from psychopy import gui
 import exptools2
 from exptools2.core import Session, Trial
 from exptools2.core import PylinkEyetrackerSession
@@ -157,6 +152,8 @@ class BallTrial(Trial):
         # self.win = session.win
         # Extract trial-specific parameters
         self.trial_idx = self.trial_nr % len(session.dmx['trial_option']) # What does this do
+
+        
         # if self.trial_idx > 0:
 
         self.trial = session.dmx['trial_option'][self.trial_idx]
@@ -348,8 +345,8 @@ class BallTrial(Trial):
             # self.session.display_text(text=f"Time for a break, chill it up in here!\n\nTask continues in {time_to_break:.2f} seconds",
             self.session.display_text(text=f"Time for a break, chill it up in here!\n\nTask continues in {int(time_to_break)} seconds",
                                     # keys=["space"],
-                                    duration=self.phase_durations[7],
-                                    # duration=1,
+                                    # duration=self.phase_durations[7],
+                                    duration=1, # So that it refresehs every second
                                     # duration=10,  # for testing
                                     height=40,
                                     color="blue",
@@ -490,11 +487,21 @@ class BallTrial(Trial):
         self.session.fixation_horizontal.draw()
         self.session.fixation_vertical.draw()
 
-class BallHueSession(Session):
+# class BallHueSession(Session):
+class BallHueSession(PylinkEyetrackerSession):
     """Session for the Ball Hue experiment"""
     
-    def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None, run_no:int=None):
-        super().__init__(output_str, output_dir=output_dir, settings_file=config_file) # THIS WAS THE BUG, settings file still was settingfil
+    def __init__(self, 
+                 output_str, 
+                 config_file="fmri_settings.yml", 
+                 output_dir=None, 
+                #  settings_file=None, 
+                 run_no:int=None, 
+                 eyetracker_on:bool=False):
+        super().__init__(output_str, 
+                         output_dir=output_dir, 
+                         settings_file=config_file, # THIS WAS THE BUG, settings file still was settingfil
+                         eyetracker_on=eyetracker_on) 
 
         
         # Load configuration file
@@ -505,40 +512,18 @@ class BallHueSession(Session):
         self.setup_visual_elements()
         
         if run_no == 1:
-            # Generate experiment design
+            # Generate experiment design, only if it's the first run 
             self.dmx = self.create_design()
 
         else: 
-            self.dmx = pd.read_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t")
+            print(f"Loading design matrix for run {run_no} from file...")
+            run_cap = 1 if run_no < 10 else 2  # Adjust for single or double digit run numbers
+            self.dmx = pd.read_csv(op.join(self.output_dir, f"{self.output_str[:-run_cap]}1_design_matrix.tsv"), sep="\t")
 
-        self.win.color = self.config.window.color  # Set window background color
+        # self.win.color = self.config.window.color  # Set window background color # Maybe not needed? EDITED: commented out
 
         # Hide mouse cursor
         self.win.mouseVisible = False
-    
-    # def __init__(self, output_str, config_file="behav_settings.yml", output_dir=None, settings_file=None):
-    #     super().__init__(output_str, output_dir=output_dir, settings_file=settings_file)
-        
-    #     # Load configuration file
-    #     config_path = os.path.join(os.path.dirname(__file__), os.pardir, config_file)
-    #     self.config = OmegaConf.load(config_path)
-        
-    #     # Setup visual elements
-    #     self.setup_visual_elements()
-        
-    #     # Generate experiment design
-    #     self.dmx = self.create_design()
-        
-    #     # Determine which button does what # Check if works
-    #     button_options = ["left", "right"]
-    #     button_order = random.sample(button_options, len(button_options))
-    #     self.button_map = {
-    #         "no": button_order[0], # Session because it's an input and the super class is not yet initialized
-    #         "yes": button_order[1],
-    #     }
-
-    #     # Hide mouse cursor
-    #     self.win.mouseVisible = False
     
     def setup_visual_elements(self):
         """Set up all visual elements needed for the experiment"""
@@ -713,15 +698,7 @@ class BallHueSession(Session):
         button_options = ["left", "right"]
         button_order = random.sample(button_options, len(button_options))
 
-        # self.global_log.loc[0] = button_order # see if this works
-
-        # self.button_map = {
-        #     "yes": button_order[1],
-        #     "no": button_order[0], # Session because it's an input and the super class is not yet initialized
-        # }
-
         design_matrix["change_detect_button"] = [button_order[0]] * (len(design_matrix) // 2) + [button_order[1]] * (len(design_matrix) // 2)
-        # design_matrix["change_detect_button"] = [config.button_map["no"], config.button_map["yes"]] * (n_trials // 2)  # Alternate button order
 
         # Save the rich design matrix to a TSV file
         design_matrix.to_csv(op.join(self.output_dir, f"{self.output_str}_design_matrix.tsv"), sep="\t", index=False)
@@ -733,22 +710,28 @@ class BallHueSession(Session):
         """Create trials for the experiment"""
         from functions.utilities import truncated_exponential_decay, trial_subset
 
-        instruction_trial = InstructionTrial(session=self,
-                                            # trial_nr=0,
-                                            trial_nr=None,
-                                            phase_durations=[np.inf],
-                                            # txt=self.settings['stimuli'].get('instruction_text'),
-                                            txt="Ball Hue Experiment Demo\n\nPress 'Space' to start",
-                                            keys=['space'], 
-                                            draw_each_frame=False)
+        if run_no == 1:
 
-        # Create trials
-        self.trials = [instruction_trial]
-        trial_counter = 1
+            instruction_trial = InstructionTrial(session=self,
+                                                # trial_nr=0,
+                                                trial_nr=None,
+                                                phase_durations=[np.inf],
+                                                # txt="Ball Hue Experiment Demo\n\nPress 'Space' to start",
+                                                txt="Ball Hue Experiment Demo\n\nWaiting for scanner pulse",
+                                                # keys=['space'], 
+                                                keys=self.config['mri'].get('sync', 't'), # CHECK IF THIS IS ENOUGH, see simple_exp session class instance
+                                                draw_each_frame=False)
 
-        for trial_nr in range(n_trials):
-        # TUrn into run-based selection
-        # for trial_nr in range(start_trial, n_trials, )
+            # Create trials
+            self.trials = [instruction_trial]
+            trial_counter = 1
+        else:
+            # Load trials from design matrix
+            self.trials = []
+            trial_counter = 0
+
+        for trial_nr_raw in range(n_trials): # 
+            trial_nr = (trial_nr_raw + (n_trials * (run_no - 1))) # Adjust for run number, so it continues where it left off
             # Define phase durations
             phase_durations = [
                 self.config.timing.fixation_dur,      # Fixation phase
@@ -770,11 +753,11 @@ class BallHueSession(Session):
                 phase_names.extend(["task_prompt", "post_prompt_iti"])
 
             # if trial_nr % 22 == 0 and trial_nr > 0 and trial_nr % 88 != 0:
-            if trial_nr % self.config.timing.short_break_freq == 0 and trial_nr > 0 and trial_nr % self.config.timing.long_break_freq != 0:
+            if (trial_nr + 1) % self.config.timing.short_break_freq == 0 and trial_nr > 0 and (trial_nr + 1) % self.config.timing.long_break_freq != 0:
                 # Add a break after every 22 trials
                 phase_durations.append(self.config.timing.short_break_dur)
                 phase_names.append("short break")
-            elif trial_nr % self.config.timing.long_break_freq == 0 and trial_nr > 0:
+            elif (trial_nr + 1) % self.config.timing.long_break_freq == 0 and trial_nr > 0:
                 # Add a longer break after every 88 trials
                 phase_durations.append(self.config.timing.long_break_dur)
                 phase_names.append("long break")
@@ -795,15 +778,26 @@ class BallHueSession(Session):
                 )
             )
 
-            self.trials[trial_nr + 1].prepare_trial()  # Prep trial params
+            trial_no_shift = 1 if run_no == 1 else 0  # Adjust trial number shift based on run number
+            self.trials[trial_nr_raw + trial_no_shift].prepare_trial()  # Prep trial params # RAW because otherwise it's too high in later runs
 
             # Increment trial counter (not used for anything as of now )
             trial_counter += 1
+        
+    def run(self, run_no:int=None):
+        """Run the bouncing ball fmri experiment"""
 
-    def run(self):
-        """Run the experiment"""
+        if run_no == 1:
+            if self.eyetracker_on:
+                print("Starting eyetracker calibration...")
+                self.calibrate_eyetracker() 
+
         # Start experiment
         self.start_experiment()
+
+        if self.eyetracker_on:
+            print("Starting eyetracker recording...")
+            self.start_eyetracker_recording()
 
         # Run all trials
         for _, trial in enumerate(self.trials):
@@ -813,22 +807,59 @@ class BallHueSession(Session):
         # Close experimentrun
         self.close()
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')
-    parser.add_argument('--subject', type=str, required=True, help='Subject identifier')
-    parser.add_argument('--run', type=int, default=1, help='Run number for the experiment (default: 1)')
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser(description='Run the fMRI ball bounce experiment in separate runs.')
+#     parser.add_argument('--subject', type=str, required=True, help='Subject identifier')
+#     parser.add_argument('--run', type=int, default=1, help='Run number for the experiment (default: 1)')
+#     parser.add_argument('--eyetracker', action='store_true', help='Enable eyetracker recording (default: False)')
 
-    args = parser.parse_args()
+#     args = parser.parse_args()
+
+#     runs_per_session = 4
+#     total_trials = 320
+
+#     config_path = os.path.join(os.path.dirname(__file__), os.pardir, "fmri_settings.yml")
+
+#     # Create and run the session
+#     # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
+#     session = BallHueSession(output_str=f"{args.subject}_{args.run}", config_file=config_path, run_no=args.run, eyetracker_on=args.eyetracker)
+    
+#     # session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
+#     # session.create_trials(n_trials=((len(session.dmx["trial_option"]) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
+#     session.create_trials(n_trials=((len(session.dmx) // runs_per_session)), run_no=args.run)  # Reduce number of trials for testing
+
+#     session.run(run_no=args.run)
+
+
+
+if __name__ == "__main__":
+    # Define the fields you want to prompt for
+    info = {
+        'Subject': 'sub-01',
+        'Run': 1,
+        'Eyetracker': True
+    }
+    dlg = gui.DlgFromDict(info, title='Experiment Info')
+    if not dlg.OK:
+        print("The experiment was quit.")
+        exit()
 
     runs_per_session = 4
     total_trials = 320
 
-    config_path = os.path.join(os.path.dirname(__file__), os.pardir, "behav_settings.yml")
+    config_path = os.path.join(os.path.dirname(__file__), os.pardir, "fmri_settings.yml")
 
     # Create and run the session
-    # session = BallHueSession(output_str="sub-potkwark", config_file=settings, settings_file=settings)
-    session = BallHueSession(output_str=args.subject, config_file=config_path, run_no=args.run)
-    
-    session.create_trials(n_trials=len(session.dmx["trial_option"]), run_no=args.run)  # Reduce number of trials for testing
+    session = BallHueSession(
+        output_str=f"{info['Subject']}_{info['Run']}",
+        config_file=config_path,
+        run_no=int(info['Run']),
+        eyetracker_on=bool(info['Eyetracker'])
+    )
 
-    session.run()
+    session.create_trials(
+        n_trials=(len(session.dmx) // runs_per_session),
+        run_no=int(info['Run'])
+    )
+
+    session.run(run_no=int(info['Run']))

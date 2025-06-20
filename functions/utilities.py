@@ -32,7 +32,25 @@ def design_spatloc():
 
     return df
 
+# THIS IS ANOTHER VERSION I HAD MADE IN ANOTHER FILE BUT I DON'T KNOW ANYMORE WHETHER IT IS A BETTER/LATER VERSION OR WORSE
+# def design_spatloc():
+#     """
+#     Design the spatial location of the stimuli.
+#     """
+#     locations = ["left", "right", "top", "bottom"]
+#     movement = ["in", "out", "stutter"]
+#     # Create a list of all combinations of locations and movements
+#     combinations = [(loc, mov) for loc in locations for mov in movement]
+#     # Shuffle the combinations
+#     random.shuffle(combinations)
+#     # Create a DataFrame with the combinations
+#     df = pd.DataFrame(combinations, columns=["location", "movement"])
+#     # Add a column for the trial number
+#     df["trial_number"] = range(1, len(df) + 1)
+#     # Add a column for the trial type
+#     df["trial_type"] = ["spatloc"] * len(df)
 
+#     return df
 
 def load_config(yaml_file):
     """Load YAML configuration file and return as nested SimpleNamespace objects."""
